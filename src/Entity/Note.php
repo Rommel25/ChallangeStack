@@ -17,10 +17,10 @@ class Note
     private ?int $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'notes')]
-    private ?eleve $eleve = null;
+    private ?Eleve $eleve = null;
 
     #[ORM\ManyToOne(inversedBy: 'notes')]
-    private ?evaluation $evaluation = null;
+    private ?Evaluation $evaluation = null;
 
     public function getId(): ?int
     {

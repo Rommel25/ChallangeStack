@@ -17,10 +17,10 @@ class Message
     private ?string $message = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    private ?communication $communication = null;
+    private ?Communication $communication = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    private ?user $expediteur = null;
+    private ?User $expediteur = null;
 
     public function getId(): ?int
     {

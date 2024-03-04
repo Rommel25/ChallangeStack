@@ -6,6 +6,7 @@ use App\Repository\CommunicationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Form;
 
 #[ORM\Entity(repositoryClass: CommunicationRepository::class)]
 class Communication
@@ -19,10 +20,10 @@ class Communication
     private Collection $messages;
 
     #[ORM\ManyToOne(inversedBy: 'communications')]
-    private ?formateur $formateur = null;
+    private ?Formateur $formateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'communications')]
-    private ?eleve $eleve = null;
+    private ?Eleve $eleve = null;
 
     public function __construct()
     {

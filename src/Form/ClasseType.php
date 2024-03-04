@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Classe;
-use App\Entity\eleve;
+use App\Entity\Eleve;
 use App\Entity\Formation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

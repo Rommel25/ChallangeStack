@@ -22,7 +22,7 @@ class Evaluation
     private Collection $questions;
 
     #[ORM\ManyToOne(inversedBy: 'evaluations')]
-    private ?cours $cours = null;
+    private ?Cours $cours = null;
 
     public function __construct()
     {

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReponseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Element;
 
 #[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
@@ -24,10 +25,10 @@ class Reponse
     private ?string $reponse_libre = null;
 
     #[ORM\ManyToOne(inversedBy: 'reponses')]
-    private ?question $question = null;
+    private ?Question $question = null;
 
     #[ORM\ManyToOne(inversedBy: 'reponses')]
-    private ?eleve $eleve = null;
+    private ?Eleve $eleve = null;
 
     public function getId(): ?int
     {

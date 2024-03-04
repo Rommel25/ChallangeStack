@@ -26,7 +26,7 @@ class Question
     private ?bool $reponse_vf = null;
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
-    private ?evaluation $evaluation = null;
+    private ?Evaluation $evaluation = null;
 
     #[ORM\OneToMany(targetEntity: Reponse::class, mappedBy: 'question')]
     private Collection $reponses;

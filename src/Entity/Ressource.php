@@ -14,7 +14,7 @@ class Ressource
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'ressources')]
-    private ?cours $cours = null;
+    private ?Cours $cours = null;
 
     public function getId(): ?int
     {

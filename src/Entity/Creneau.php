@@ -26,7 +26,7 @@ class Creneau
     private ?Classe $classe = null;
 
     #[ORM\ManyToOne(inversedBy: 'creneaux')]
-    private ?cours $cours = null;
+    private ?Cours $cours = null;
 
     #[ORM\ManyToMany(targetEntity: eleve::class, inversedBy: 'creneaux')]
     private Collection $eleves;
