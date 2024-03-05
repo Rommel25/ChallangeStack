@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        {% if app.user and app.user.formateur %}
+            Y'a
+        {% else %}
+            Y'en a pas
+        {% endif %}
+    </div>
+{% endblock %}
+
+
