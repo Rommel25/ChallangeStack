@@ -15,8 +15,8 @@ class Eleve
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Classe::class, mappedBy: 'eleves')]
-    private ?Collection $classes;
+    #[ORM\ManyToMany(targetEntity: Classe::class, inversedBy: 'eleves', cascade: ['persist', 'remove'])]
+    private Collection $classes;
 
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'eleve')]
     private ?Collection $notes;
@@ -28,7 +28,7 @@ class Eleve
     private ?Collection $communications;
 
     #[ORM\ManyToMany(targetEntity: Creneau::class, mappedBy: 'eleves')]
-    private ?Collection $creneaux;
+    private Collection $creneaux;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $user = null;
