@@ -20,9 +20,11 @@ class BaseController extends AbstractController
         // Fetch all ateliers from the repository
 
         $formateur = $formateurRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+        $userId = $security->getUser()->getId();
 
         return $this->render('index.html.twig', [
-            "formateur" => $formateur
+            "formateur" => $formateur,
+            "userId" => $userId
         ]);
     }
 
