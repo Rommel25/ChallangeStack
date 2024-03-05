@@ -18,10 +18,10 @@ class Formateur
     #[ORM\OneToMany(targetEntity: Communication::class, mappedBy: 'formateur')]
     private Collection $communications;
 
-    #[ORM\OneToMany(targetEntity: cours::class, mappedBy: 'formateur')]
+    #[ORM\OneToMany(targetEntity: Cours::class, mappedBy: 'formateur')]
     private Collection $cours;
 
-    #[ORM\OneToMany(targetEntity: organisme::class, mappedBy: 'formateur')]
+    #[ORM\OneToMany(targetEntity: Organisme::class, mappedBy: 'formateur')]
     private Collection $organisme;
 
     public function __construct()
@@ -74,7 +74,7 @@ class Formateur
         return $this->cours;
     }
 
-    public function addCour(cours $cour): static
+    public function addCour(Cours $cour): static
     {
         if (!$this->cours->contains($cour)) {
             $this->cours->add($cour);
@@ -84,7 +84,7 @@ class Formateur
         return $this;
     }
 
-    public function removeCour(cours $cour): static
+    public function removeCour(Cours $cour): static
     {
         if ($this->cours->removeElement($cour)) {
             // set the owning side to null (unless already changed)
@@ -104,7 +104,7 @@ class Formateur
         return $this->organisme;
     }
 
-    public function addOrganisme(organisme $organisme): static
+    public function addOrganisme(Organisme $organisme): static
     {
         if (!$this->organisme->contains($organisme)) {
             $this->organisme->add($organisme);
@@ -114,7 +114,7 @@ class Formateur
         return $this;
     }
 
-    public function removeOrganisme(organisme $organisme): static
+    public function removeOrganisme(Organisme $organisme): static
     {
         if ($this->organisme->removeElement($organisme)) {
             // set the owning side to null (unless already changed)

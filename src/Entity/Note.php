@@ -39,24 +39,24 @@ class Note
         return $this;
     }
 
-    public function getEleve(): ?eleve
+    public function getEleve(): ?Eleve
     {
         return $this->eleve;
     }
 
-    public function setEleve(?eleve $eleve): static
+    public function setEleve(?Eleve $eleve): static
     {
         $this->eleve = $eleve;
 
         return $this;
     }
 
-    public function getEvaluation(): ?evaluation
+    public function getEvaluation(): ?Evaluation
     {
         return $this->evaluation;
     }
 
-    public function setEvaluation(?evaluation $evaluation): static
+    public function setEvaluation(?Evaluation $evaluation): static
     {
         $this->evaluation = $evaluation;
 

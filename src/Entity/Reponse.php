@@ -71,24 +71,24 @@ class Reponse
         return $this;
     }
 
-    public function getQuestion(): ?question
+    public function getQuestion(): ?Question
     {
         return $this->question;
     }
 
-    public function setQuestion(?question $question): static
+    public function setQuestion(?Question $question): static
     {
         $this->question = $question;
 
         return $this;
     }
 
-    public function getEleve(): ?eleve
+    public function getEleve(): ?Eleve
     {
         return $this->eleve;
     }
 
-    public function setEleve(?eleve $eleve): static
+    public function setEleve(?Eleve $eleve): static
     {
         $this->eleve = $eleve;
 

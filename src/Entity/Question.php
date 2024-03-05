@@ -77,12 +77,12 @@ class Question
         return $this;
     }
 
-    public function getEvaluation(): ?evaluation
+    public function getEvaluation(): ?Evaluation
     {
         return $this->evaluation;
     }
 
-    public function setEvaluation(?evaluation $evaluation): static
+    public function setEvaluation(?Evaluation $evaluation): static
     {
         $this->evaluation = $evaluation;
 

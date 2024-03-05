@@ -28,7 +28,7 @@ class Creneau
     #[ORM\ManyToOne(inversedBy: 'creneaux')]
     private ?Cours $cours = null;
 
-    #[ORM\ManyToMany(targetEntity: eleve::class, inversedBy: 'creneaux')]
+    #[ORM\ManyToMany(targetEntity: Eleve::class, inversedBy: 'creneaux')]
     private Collection $eleves;
 
     public function __construct()
@@ -77,12 +77,12 @@ class Creneau
         return $this;
     }
 
-    public function getCours(): ?cours
+    public function getCours(): ?Cours
     {
         return $this->cours;
     }
 
-    public function setCours(?cours $cours): static
+    public function setCours(?Cours $cours): static
     {
         $this->cours = $cours;
 
@@ -97,7 +97,7 @@ class Creneau
         return $this->eleves;
     }
 
-    public function addElefe(eleve $elefe): static
+    public function addElefe(Eleve $elefe): static
     {
         if (!$this->eleves->contains($elefe)) {
             $this->eleves->add($elefe);
@@ -106,7 +106,7 @@ class Creneau
         return $this;
     }
 
-    public function removeElefe(eleve $elefe): static
+    public function removeElefe(Eleve $elefe): static
     {
         $this->eleves->removeElement($elefe);
 

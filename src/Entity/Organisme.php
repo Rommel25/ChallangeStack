@@ -18,7 +18,7 @@ class Organisme
     #[ORM\Column(nullable: true)]
     private ?bool $isPublic = null;
 
-    #[ORM\OneToMany(targetEntity: formation::class, mappedBy: 'organisme')]
+    #[ORM\OneToMany(targetEntity: Formation::class, mappedBy: 'organisme')]
     private Collection $formations;
 
     #[ORM\ManyToOne(inversedBy: 'organisme')]
@@ -54,7 +54,7 @@ class Organisme
         return $this->formations;
     }
 
-    public function addFormation(formation $formation): static
+    public function addFormation(Formation $formation): static
     {
         if (!$this->formations->contains($formation)) {
             $this->formations->add($formation);
@@ -64,7 +64,7 @@ class Organisme
         return $this;
     }
 
-    public function removeFormation(formation $formation): static
+    public function removeFormation(Formation $formation): static
     {
         if ($this->formations->removeElement($formation)) {
             // set the owning side to null (unless already changed)

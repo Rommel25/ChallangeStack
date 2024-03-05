@@ -18,7 +18,7 @@ class Formation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $libelle = null;
 
-    #[ORM\OneToMany(targetEntity: classe::class, mappedBy: 'formation')]
+    #[ORM\OneToMany(targetEntity: Classe::class, mappedBy: 'formation')]
     private Collection $classes;
 
     #[ORM\ManyToOne(inversedBy: 'formations')]
@@ -54,7 +54,7 @@ class Formation
         return $this->classes;
     }
 
-    public function addClass(classe $class): static
+    public function addClass(Classe $class): static
     {
         if (!$this->classes->contains($class)) {
             $this->classes->add($class);
@@ -64,7 +64,7 @@ class Formation
         return $this;
     }
 
-    public function removeClass(classe $class): static
+    public function removeClass(Classe $class): static
     {
         if ($this->classes->removeElement($class)) {
             // set the owning side to null (unless already changed)

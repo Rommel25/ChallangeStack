@@ -24,3 +24,6 @@
 ###< symfony/asset-mapper ###
 
 .idea
+
+node_modules/
+node/

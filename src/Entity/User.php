@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\enum\RoleEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,6 +37,9 @@ class User
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Formateur $formateur = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $type = RoleEnum::USER;
 
     public function __construct()
     {
@@ -125,24 +129,24 @@ class User
         return $this;
     }
 
-    public function getEleve(): ?eleve
+    public function getEleve(): ?Eleve
     {
         return $this->eleve;
     }
 
-    public function setEleve(?eleve $eleve): static
+    public function setEleve(?Eleve $eleve): static
     {
         $this->eleve = $eleve;
 
         return $this;
     }
 
-    public function getFormateur(): ?formateur
+    public function getFormateur(): ?Formateur
     {
         return $this->formateur;
     }
 
-    public function setFormateur(?formateur $formateur): static
+    public function setFormateur(?Formateur $formateur): static
     {
         $this->formateur = $formateur;
 
