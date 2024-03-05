@@ -16,7 +16,7 @@ class BaseController extends AbstractController
     public function index(): Response
     {
         // Fetch all ateliers from the repository
-
+        
         return $this->render('index.html.twig', [
         ]);
     }
