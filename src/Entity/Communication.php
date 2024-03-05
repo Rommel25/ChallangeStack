@@ -16,7 +16,7 @@ class Communication
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'communication')]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'communication', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $messages;
 
     #[ORM\ManyToOne(inversedBy: 'communications')]
