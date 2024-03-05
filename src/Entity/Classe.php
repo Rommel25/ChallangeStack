@@ -18,10 +18,10 @@ class Classe
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $section = null;
 
-    #[ORM\ManyToMany(targetEntity: eleve::class, inversedBy: 'classes')]
+    #[ORM\ManyToMany(targetEntity: Eleve::class, inversedBy: 'classes')]
     private Collection $eleves;
 
-    #[ORM\OneToMany(targetEntity: creneau::class, mappedBy: 'classe')]
+    #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'classe')]
     private Collection $creneaux;
 
     #[ORM\ManyToOne(inversedBy: 'classes')]
@@ -58,7 +58,7 @@ class Classe
         return $this->eleves;
     }
 
-    public function addElefe(eleve $elefe): static
+    public function addElefe(Eleve $elefe): static
     {
         if (!$this->eleves->contains($elefe)) {
             $this->eleves->add($elefe);
@@ -67,7 +67,7 @@ class Classe
         return $this;
     }
 
-    public function removeElefe(eleve $elefe): static
+    public function removeElefe(Eleve $elefe): static
     {
         $this->eleves->removeElement($elefe);
 
@@ -82,7 +82,7 @@ class Classe
         return $this->creneaux;
     }
 
-    public function addCreneaux(creneau $creneaux): static
+    public function addCreneaux(Creneau $creneaux): static
     {
         if (!$this->creneaux->contains($creneaux)) {
             $this->creneaux->add($creneaux);
@@ -92,7 +92,7 @@ class Classe
         return $this;
     }
 
-    public function removeCreneaux(creneau $creneaux): static
+    public function removeCreneaux(Creneau $creneaux): static
     {
         if ($this->creneaux->removeElement($creneaux)) {
             // set the owning side to null (unless already changed)

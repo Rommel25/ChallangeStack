@@ -21,12 +21,12 @@ class Ressource
         return $this->id;
     }
 
-    public function getCours(): ?cours
+    public function getCours(): ?Cours
     {
         return $this->cours;
     }
 
-    public function setCours(?cours $cours): static
+    public function setCours(?Cours $cours): static
     {
         $this->cours = $cours;
 

@@ -65,24 +65,24 @@ class Communication
         return $this;
     }
 
-    public function getFormateur(): ?formateur
+    public function getFormateur(): ?Formateur
     {
         return $this->formateur;
     }
 
-    public function setFormateur(?formateur $formateur): static
+    public function setFormateur(?Formateur $formateur): static
     {
         $this->formateur = $formateur;
 
         return $this;
     }
 
-    public function getEleve(): ?eleve
+    public function getEleve(): ?Eleve
     {
         return $this->eleve;
     }
 
-    public function setEleve(?eleve $eleve): static
+    public function setEleve(?Eleve $eleve): static
     {
         $this->eleve = $eleve;
 

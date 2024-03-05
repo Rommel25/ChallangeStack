@@ -39,24 +39,24 @@ class Message
         return $this;
     }
 
-    public function getCommunication(): ?communication
+    public function getCommunication(): ?Communication
     {
         return $this->communication;
     }
 
-    public function setCommunication(?communication $communication): static
+    public function setCommunication(?Communication $communication): static
     {
         $this->communication = $communication;
 
         return $this;
     }
 
-    public function getExpediteur(): ?user
+    public function getExpediteur(): ?User
     {
         return $this->expediteur;
     }
 
-    public function setExpediteur(?user $expediteur): static
+    public function setExpediteur(?User $expediteur): static
     {
         $this->expediteur = $expediteur;
 
