@@ -1,43 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cours index{% endblock %}
-
 {% block body %}
-    <h1>Cours index</h1>
+  <h1 class="text-2xl py-5">Liste des cours</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Objectif</th>
-                <th>Duree</th>
-                <th>Difficulte</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+        Vos cours<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Parcourez la liste des cours que vous avez.</p>
+      </caption>
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3">ID</th>
+          <th scope="col" class="px-6 py-3">Titre</th>
+          <th scope="col" class="px-6 py-3">Description</th>
+          <th scope="col" class="px-6 py-3">Objectif</th>
+          <th scope="col" class="px-6 py-3">Durée</th>
+          <th scope="col" class="px-6 py-3">Difficulté</th>
+          <th scope="col" class="px-6 py-3">voir</th>
+          <th scope="col" class="px-6 py-3">Modifier</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for cour in cours %}
-            <tr>
-                <td>{{ cour.id }}</td>
-                <td>{{ cour.titre }}</td>
-                <td>{{ cour.description }}</td>
-                <td>{{ cour.objectif }}</td>
-                <td>{{ cour.duree }}</td>
-                <td>{{ cour.difficulte }}</td>
-                <td>
-                    <a href="{{ path('app_cours_show', {'id': cour.id}) }}">show</a>
-                    <a href="{{ path('app_cours_edit', {'id': cour.id}) }}">edit</a>
-                </td>
-            </tr>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ cour.id }}</th>
+            <td class="px-6 py-4">{{ cour.titre }}</td>
+            <td class="px-6 py-4">{{ cour.description }}</td>
+            <td class="px-6 py-4">{{ cour.objectif }}</td>
+            <td class="px-6 py-4">{{ cour.duree }}</td>
+            <td class="px-6 py-4">{{ cour.difficulte }}</td>
+            <td class="px-6 py-4">
+              <a href="{{ path('app_cours_show', { id: cour.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+            </td>
+            <td class="px-6 py-4">
+              <a href="{{ path('app_cours_edit', { id: cour.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+            </td>
+          </tr>
         {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
+          <tr class="bg-white dark:bg-gray-800">
+            <td colspan="7" class="px-6 py-4">Aucun cours trouvé</td>
+          </tr>
         {% endfor %}
-        </tbody>
+      </tbody>
     </table>
+  </div>
 
-    <a href="{{ path('app_cours_new') }}">Create new</a>
+  <a href="{{ path('app_cours_new') }}" class="mt-4 inline-block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Créer un nouveau cours</a>
 {% endblock %}
