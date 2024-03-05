@@ -1,0 +1,25 @@
+{% block title %}1ere connexion{% endblock %}
+
+{% block body %}
+    {% if user %}
+    <h1>Salut {{ user.prenom }}</h1>
+    <div id="login_page" class="container d-flex align-items-center justify-content-center">
+        <form method="post">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1 class="h3 font-weight-normal">Please sign in</h1>
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+
+                    No account yet ? <a href="{{ path('app_atelier') }}">Sign up</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    {% else %}
+    <h2>Deja defini un mdp</h2>
+    {% endif %}
+{% endblock %}

@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use App\enum\RoleEnum;
+use App\enum\rolesEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Vtiful\Kernel\Format;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,6 +31,9 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $plainpassword = null;
+
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'expediteur')]
     private Collection $messages;
 
@@ -38,13 +43,76 @@ class User
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Formateur $formateur = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $type = RoleEnum::USER;
+    #[ORM\Column]
+    private array $roles = ["USER"];
+
+    #[ORM\Column(length: 500)]
+    private ?string $token;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
     }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainpassword(): ?string
+    {
+        return $this->plainpassword;
+    }
+
+    /**
+     * @param string|null $plainpassword
+     */
+    public function setPlainpassword(?string $plainpassword): void
+    {
+        $this->plainpassword = $plainpassword;
+    }
+
+    /**
+     * @return string|null
+     */
+
+
+    /**
+     * @param string|null $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'USER';
+
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string|null $token
+     */
+    public function setToken(?string $token): void
+    {
+        $this->token = $token;
+    }
+
+
 
     public function getId(): ?int
     {
@@ -151,5 +219,17 @@ class User
         $this->formateur = $formateur;
 
         return $this;
+    }
+
+
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 }

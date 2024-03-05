@@ -1,0 +1,23 @@
+{#{% extends 'base.html.twig' %}#}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+
+    <div id="login_page" class="container d-flex align-items-center justify-content-center">
+        <form method="post">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1 class="h3 font-weight-normal">Please sign in</h1>
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+
+                    No account yet ? <a href="{{ path('app_atelier') }}">Sign up</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
