@@ -24,12 +24,33 @@ class Formateur
     #[ORM\OneToMany(targetEntity: Organisme::class, mappedBy: 'formateur')]
     private Collection $organisme;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->communications = new ArrayCollection();
         $this->cours = new ArrayCollection();
         $this->organisme = new ArrayCollection();
     }
+
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
+
 
     public function getId(): ?int
     {
