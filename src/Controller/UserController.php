@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use function Symfony\Component\Translation\t;
 
 
 #[Route('/user')]
@@ -23,6 +24,25 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
              'userId' => $user,
+        ]);
+    }
+
+    #[Route('/profile', name: 'profile', methods: ['GET', 'POST'])]
+    public function profile(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security): Response
+    {
+        $user = $userRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+//        dd($user);
+        return $this->render('user/edit.html.twig', [
+            'userId' => $user,
+            'form' => $form,
         ]);
     }
 
