@@ -2,8 +2,16 @@
 
 {% block body %}
     <div class="flex justify-center items-center h-full">
-        {% if app.user %} <!-- and app.user.formateur.organisme|length > 0 -->
-            
+        {% if formateur and formateur.organisme|length > 0 %}
+            <div class="flex flex-wrap gap-4">
+                {%for organisme in formateur.organisme %}
+                    <a href="{{ path("app_organisme_show",{id: organisme.id}) }}">
+                        <div class="p-10 border border-blue-500 rounded-lg">
+                            {{ organisme.id }}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
         {% else %}
             <div class="flex flex-col items-center justify-center gap-y-4 text-2xl font-bold">
                 <p>Vous n'avez pas d'organisme</p>

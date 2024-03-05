@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation{% endblock %}
+
+{% block body %}
+    {% if formation|length > 0 %}
+        <h1>Formation</h1>
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ formation.id }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ formation.libelle }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_formation_index') }}">back to list</a>
+
+        <a href="{{ path('app_formation_edit', {'id': formation.id}) }}">edit</a>
+
+        {{ include('formation/_delete_form.html.twig') }}
+        {% else %}
+
+        Y'a pas
+    {% endif %}
+{% endblock %}

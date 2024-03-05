@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Communication index{% endblock %}
+
+{% block body %}
+    <h1>Communication index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for communication in communications %}
+            <tr>
+                <td>{{ communication.id }}</td>
+                <td>
+                    <a href="{{ path('app_communication_show', {'id': communication.id}) }}">show</a>
+                    <a href="{{ path('app_communication_edit', {'id': communication.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_communication_new') }}">Create new</a>
+{% endblock %}
