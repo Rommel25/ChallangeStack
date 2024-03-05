@@ -19,10 +19,10 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository, Security $security): Response
     {
-        // $user = $userRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+         $user = $userRepository->findOneBy(['id'=>$security->getUser()->getId()]);
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
-            // 'userId' => $user,
+             'userId' => $user,
         ]);
     }
 
@@ -51,6 +51,7 @@ class UserController extends AbstractController
     {
         return $this->render('user/show.html.twig', [
             'userId' => $user,
+            'user' => $user
         ]);
     }
 
