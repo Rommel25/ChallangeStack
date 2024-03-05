@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Communication{% endblock %}
+
+{% block body %}
+    <h1>Create new Communication</h1>
+
+    {{ include('communication/_form.html.twig') }}
+
+    <a href="{{ path('app_communication_index') }}">back to list</a>
+{% endblock %}
