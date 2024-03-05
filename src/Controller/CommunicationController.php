@@ -87,7 +87,8 @@ class CommunicationController extends AbstractController
         $message = new Message();
         $message->setMessage($msg)
                 ->setCommunication($communication)
-                ->setExpediteur($this->getUser());
+                ->setExpediteur($this->getUser())
+                ->setTime(new \DateTime());
 
         $entityManager->persist($message);
         $entityManager->flush();
