@@ -16,19 +16,22 @@ class Eleve
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Classe::class, mappedBy: 'eleves')]
-    private Collection $classes;
+    private ?Collection $classes;
 
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'eleve')]
-    private Collection $notes;
+    private ?Collection $notes;
 
     #[ORM\OneToMany(targetEntity: Reponse::class, mappedBy: 'eleve')]
-    private Collection $reponses;
+    private ?Collection $reponses;
 
     #[ORM\OneToMany(targetEntity: Communication::class, mappedBy: 'eleve')]
-    private Collection $communications;
+    private ?Collection $communications;
 
     #[ORM\ManyToMany(targetEntity: Creneau::class, mappedBy: 'eleves')]
-    private Collection $creneaux;
+    private ?Collection $creneaux;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -38,6 +41,24 @@ class Eleve
         $this->communications = new ArrayCollection();
         $this->creneaux = new ArrayCollection();
     }
+
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
+
 
     public function getId(): ?int
     {

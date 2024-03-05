@@ -1,8 +1,8 @@
 {% block title %}1ere connexion{% endblock %}
 
 {% block body %}
-    {% if user %}
-    <h1>Salut {{ user.prenom }}</h1>
+{#    {% if user %}#}
+{#    <h1>Salut {{ user.prenom }}</h1>#}
     <div id="login_page" class="container d-flex align-items-center justify-content-center">
         <form method="post">
             <div class="card text-center">
@@ -19,7 +19,7 @@
 
         </form>
     </div>
-    {% else %}
-    <h2>Deja defini un mdp</h2>
-    {% endif %}
+{#    {% else %}#}
+{#    <h2>Deja defini un mdp</h2>#}
+{#    {% endif %}#}
 {% endblock %}

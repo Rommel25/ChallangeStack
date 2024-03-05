@@ -37,12 +37,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'expediteur')]
     private Collection $messages;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Eleve $eleve = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Formateur $formateur = null;
-
     #[ORM\Column]
     private array $roles = ["USER"];
 
@@ -61,6 +55,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->plainpassword;
     }
+
+
 
     /**
      * @param string|null $plainpassword

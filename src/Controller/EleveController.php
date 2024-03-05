@@ -9,7 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Uuid;
 
 #[Route('/eleve')]
 class EleveController extends AbstractController
@@ -23,17 +26,30 @@ class EleveController extends AbstractController
     }
 
     #[Route('/new', name: 'app_eleve_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $eleve = new Eleve();
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $eleve->getUser()->setPassword('');
+            $eleve->getUser()->setPlainPassword('');
+            $uniqueId = uniqid();
+            $eleve->getUser()->setToken($uniqueId);
             $entityManager->persist($eleve);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
+            $email = (new Email())
+                ->from('support@academiaflow.com')
+                ->to($eleve->getUser()->getEmail())
+                ->subject('Va niquer ta mere')
+                ->text('Sending emails is fun again!')
+                ->html('<p>Set password here <a>http://challenge.local/premiereconnexion/'.$uniqueId.'</a></p>');
+
+            $mailer->send($email);
+
+//            return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('eleve/new.html.twig', [
