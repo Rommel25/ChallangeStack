@@ -3,29 +3,42 @@
 {% block title %}Formation{% endblock %}
 
 {% block body %}
-    {% if formation|length > 0 %}
-        <h1>Formation</h1>
-
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ formation.id }}</td>
-            </tr>
-            <tr>
-                <th>Libelle</th>
-                <td>{{ formation.libelle }}</td>
-            </tr>
-            </tbody>
-        </table>
-
-        <a href="{{ path('app_formation_index') }}">back to list</a>
-
-        <a href="{{ path('app_formation_edit', {'id': formation.id}) }}">edit</a>
-
-        {{ include('formation/_delete_form.html.twig') }}
+    {% if classes|length > 0 %}
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+        Vos classes dans la formation : {{ formation.libelle }}<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Parcourez la liste des classes que vous avez dans cette formations</p>
+    </caption>
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <tr>
+        <th scope="col" class="px-6 py-3">ID</th>
+        <th scope="col" class="px-6 py-3">Nom</th>
+        <th scope="col" class="px-6 py-3">Voir</th>
+        <th scope="col" class="px-6 py-3">Modifier</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for classe in classes %}
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ classe.id }}</th>
+            <td class="px-6 py-4">{{ classe.section }}</td>
+            <td class="px-6 py-4">
+                <a href="{{ path('app_formation_show', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+            </td>
+            <td class="px-6 py-4">
+                <a href="{{ path('app_formation_edit', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
         {% else %}
-
-        Y'a pas
+            Vous n'avez pas de classes dans cette formations
     {% endif %}
+    <div class="flex justify-center items-center mt-4">
+        <a href="/classe/new">
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Créer une classe
+            </button>
+        </a>
+    </div>
 {% endblock %}

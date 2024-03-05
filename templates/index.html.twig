@@ -1,27 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="flex justify-center items-center h-full">
+    <div class="flex flex-col gap-y-4 justify-center items-center h-full">
         {% if formateur and formateur.organisme|length > 0 %}
-            <div class="flex flex-wrap gap-4">
-                {%for organisme in formateur.organisme %}
-                    <a href="{{ path("app_organisme_show",{id: organisme.id}) }}">
-                        <div class="p-10 border border-blue-500 rounded-lg">
-                            {{ organisme.id }}
-                        </div>
-                    </a>
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                    Vos organismes<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Parcourez la liste des organismes que vous avez.</p>
+                </caption>
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">ID</th>
+                    <th scope="col" class="px-6 py-3">Voir</th>
+                    <th scope="col" class="px-6 py-3">Modifier</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for organisme in formateur.organisme %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ organisme.id }}</th>
+                        <td class="px-6 py-4">
+                            <a href="{{ path('app_organisme_show', { id: organisme.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="{{ path('app_organisme_edit', { id: organisme.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+                        </td>
+                    </tr>
                 {% endfor %}
-            </div>
+                </tbody>
+            </table>
         {% else %}
-            <div class="flex flex-col items-center justify-center gap-y-4 text-2xl font-bold">
-                <p>Vous n'avez pas d'organisme</p>
-                <a href="/organisme/new">
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                        Créer un organisme
-                    </button>
-                </a>
-            </div>
+            <p>Vous n'avez pas d'organisme</p>
         {% endif %}
+        <div class="flex justify-center items-center">
+            <a href="/organisme/new">
+                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    Créer un organisme
+                </button>
+            </a>
+        </div>
     </div>
 {% endblock %}
 
