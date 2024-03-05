@@ -82,7 +82,6 @@ class SecurityController extends AbstractController
         $user = $userrepo->findOneBy(['token'=>$id]);
         $form = $this->createForm(FirstConnexionType::class);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()){
             $formData = $form->getData();
             if($formData->getPassword() == $formData->getPlainpassword()){

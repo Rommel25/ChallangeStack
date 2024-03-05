@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Classe;
 use App\Entity\Eleve;
 use App\Form\EleveType;
 use App\Repository\EleveRepository;
@@ -45,7 +46,7 @@ class EleveController extends AbstractController
                 ->to($eleve->getUser()->getEmail())
                 ->subject('Va niquer ta mere')
                 ->text('Sending emails is fun again!')
-                ->html('<p>Set password here <a>http://challenge.local/premiereconnexion/'.$uniqueId.'</a></p>');
+                ->html('<p>Set password here http://challenge.local/premiereconnexion/'.$uniqueId.'</p>');
 
             $mailer->send($email);
 
@@ -71,8 +72,9 @@ class EleveController extends AbstractController
     {
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
-
+//        dd($eleve->getClasses());
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($eleve);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
@@ -80,7 +82,7 @@ class EleveController extends AbstractController
 
         return $this->render('eleve/edit.html.twig', [
             'eleve' => $eleve,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
