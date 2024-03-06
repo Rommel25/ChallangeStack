@@ -22,20 +22,22 @@
       </thead>
       <tbody>
         {% for cour in cours %}
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ cour.id }}</th>
-            <td class="px-6 py-4">{{ cour.titre }}</td>
-            <td class="px-6 py-4">{{ cour.description }}</td>
-            <td class="px-6 py-4">{{ cour.objectif }}</td>
-            <td class="px-6 py-4">{{ cour.duree }}</td>
-            <td class="px-6 py-4">{{ cour.difficulte }}</td>
-            <td class="px-6 py-4">
-              <a href="{{ path('app_cours_show', { id: cour.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
-            </td>
-            <td class="px-6 py-4">
-              <a href="{{ path('app_cours_edit', { id: cour.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
-            </td>
-          </tr>
+          {% if app.user and cour.formateur.user.id == app.user.id %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ cour.id }}</th>
+              <td class="px-6 py-4">{{ cour.titre }}</td>
+              <td class="px-6 py-4">{{ cour.description }}</td>
+              <td class="px-6 py-4">{{ cour.objectif }}</td>
+              <td class="px-6 py-4">{{ cour.duree }}</td>
+              <td class="px-6 py-4">{{ cour.difficulte }}</td>
+              <td class="px-6 py-4">
+                <a href="{{ path('app_cours_show', { id: cour.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+              </td>
+              <td class="px-6 py-4">
+                <a href="{{ path('app_cours_edit', { id: cour.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+              </td>
+            </tr>
+          {% endif %}
         {% else %}
           <tr class="bg-white dark:bg-gray-800">
             <td colspan="7" class="px-6 py-4">Aucun cours trouvé</td>
