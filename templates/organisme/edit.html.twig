@@ -8,8 +8,8 @@
   <h1>Edit Organisme</h1>
 
   <div class="flex flex-col">
-    {% if app.user and app.user.image and app.user.image.data %}
-      <a href="{{ path('app_user_image') }}" class="block w-28 h-28 rounded-full overflow-hidden shadow-lg border-2 border-gray-300 mb-4"><img src="data:{{ app.user.image.getContentType() }};base64,{{ app.user.image.data }}" alt="Profile Image" class="object-cover w-full h-full" /></a>
+    {% if organisme.image and organisme.image.data %}
+      <a href="{{ path('app_user_image') }}" class="block w-28 h-28 rounded-full overflow-hidden shadow-lg border-2 border-gray-300 mb-4"><img src="data:{{ organisme.image.getContentType() }};base64,{{ organisme.image.data }}" alt="Profile Image" class="object-cover w-full h-full" /></a>
     {% else %}
       <p class="text-gray-500 mb-4">Pas d'image de profil disponible.</p> {# mb-4 pour la cohérence de l'espace #}
     {% endif %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Formateur;
 use App\Entity\Organisme;
 use App\Form\OrganismeType;
 use App\Repository\OrganismeRepository;
@@ -13,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Form\ImageType;
 use App\Entity\Image;
+use App\Repository\FormateurRepository;
+use LogicException;
 
 #[Route('/organisme')]
 class OrganismeController extends AbstractController
@@ -26,11 +29,16 @@ class OrganismeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_organisme_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $security, FormateurRepository $formateurRepository): Response
     {
         $organisme = new Organisme();
         $form = $this->createForm(OrganismeType::class, $organisme);
         $form->handleRequest($request);
+
+        $user = $security->getUser();
+        $formateur = $formateurRepository->findOneBy(['user' => $user->getId()]);
+
+        $organisme->setFormateur($formateur);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($organisme);
@@ -85,11 +93,19 @@ class OrganismeController extends AbstractController
                 $entityManager->persist($image);
                 $entityManager->flush();
 
-                if ($security->getUser()->getImage()) {
-                    $entityManager->remove($security->getUser()->getImage());
+                if ($organisme->getImage()) {
+                    $oldImage = $organisme->getImage();
+                    // Mettre à null la référence de l'image dans organisme
+                    $organisme->setImage(null);
+                    $entityManager->persist($organisme);
+                    $entityManager->flush();
+
+                    // Ensuite, supprimez l'image
+                    $entityManager->remove($oldImage);
+                    $entityManager->flush();
                 }
 
-                $security->getUser()->setImage($image);
+                $organisme->setImage($image);
                 $entityManager->flush();
 
                 return $this->redirectToRoute('app_atelier');
