@@ -38,8 +38,7 @@ class SecurityController extends AbstractController
             $formData = $form->getData();
             $mail = $formData->getEmail();
             $user = $userrepo->findOneBy(["email" => $mail]);
-//            dd(($formData->getPassword()) == $user->getPassword());
-            if (($formData->getPassword()) == $user->getPassword()) {
+            if ((sha1($formData->getPassword())) == $user->getPassword()) {
                 $roles = [];
                 if (in_array('ADMIN', $user->getRoles())) {
                     $roles[] = 'ADMIN';
@@ -88,7 +87,7 @@ class SecurityController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $formData = $form->getData();
             if($formData->getPassword() == $formData->getPlainpassword()){
-                $user->setPassword($formData->getPassword());
+                $user->setPassword(sha1($formData->getPassword()));
                 $roles = [];
 
                 if (in_array('USER',$user->getRoles())) {
@@ -124,7 +123,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formateur->getUser()->setPassword($formateur->getUser()->getPassword());
+            $formateur->getUser()->setPassword(sha1($formateur->getUser()->getPassword()));
             $formateur->getUser()->setRoles(["TEACHER"]);
             $formateur->getUser()->setToken("");
             $this->entityManager->persist($formateur);

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Classe;
 use App\Form\ClasseType;
 use App\Repository\ClasseRepository;
+use App\Repository\EleveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,10 +47,14 @@ class ClasseController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_classe_show', methods: ['GET'])]
-    public function show(Classe $classe): Response
+    public function show(Classe $classe, EleveRepository $eleveRepository): Response
     {
+
+        $eleves = $classe->getEleves();
+
         return $this->render('classe/show.html.twig', [
             'classe' => $classe,
+            'eleves' => $eleves
         ]);
     }
 
