@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\FirstConnexionType;
 use App\Form\FormateurType;
 use App\Form\LoginType;
+use App\Form\UserCreateType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,7 +83,7 @@ class SecurityController extends AbstractController
     {
         $userrepo = $this->entityManager->getRepository(User::class);
         $user = $userrepo->findOneBy(['token'=>$id]);
-        $form = $this->createForm(FirstConnexionType::class);
+        $form = $this->createForm(UserCreateType::class, $user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $formData = $form->getData();
