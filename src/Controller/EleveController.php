@@ -50,7 +50,7 @@ class EleveController extends AbstractController
 
             $mailer->send($email);
 
-//            return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('eleve/new.html.twig', [

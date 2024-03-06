@@ -16,6 +16,7 @@ class Eleve
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Classe::class, inversedBy: 'eleves', cascade: ['persist', 'remove'])]
+    #[ORM\JoinTable(name: 'eleves_as_classe')]
     private Collection $classes;
 
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'eleve')]
