@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateInterval;
 use App\Entity\Cours;
 use App\Entity\Creneau;
 use App\Entity\Formateur;
@@ -94,9 +95,35 @@ class CreneauController extends AbstractController
                 ];
             }
         }
+        foreach ($formateur->getUser()->getCreneaux() as $creneauCreated) {
+            if ($creneauCreated->getCours() == null) {
+                $response[] = [
+                    'title' => 'Créneau libre',
+                    'url'   => '/creneau/' . $creneauCreated->getId(),
+                    'start' => $creneauCreated->getDebut()->format('Y-m-d H:i:s'),
+                    'end'   => $creneauCreated->getFin()->format('Y-m-d H:i:s'),
+                ];
+            }
+        }
+
         return new JsonResponse($response);
     }
 
+    #[Route('/calendarNew', name: 'app_creneau_new_calendar', methods: ['GET'])]
+    public function calendarNew(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if ($request->query->get('date')){
+            $date = new \DateTime($request->query->get('date'));
+            $creneau = new Creneau();
+            $creneau->setDebut($date)
+                    ->setFin($date->add(new DateInterval('PT1H')))
+                    ->setCreatedBy($this->getUser());
+            $entityManager->persist($creneau);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_atelier', [], Response::HTTP_SEE_OTHER);
+    }
+    
     #[Route('/{id}', name: 'app_creneau_show', methods: ['GET'])]
     public function show(Creneau $creneau): Response
     {
@@ -104,4 +131,5 @@ class CreneauController extends AbstractController
             'creneau' => $creneau,
         ]);
     }
+
 }
