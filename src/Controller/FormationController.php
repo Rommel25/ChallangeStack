@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ClasseRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route('/formation')]
 class FormationController extends AbstractController
@@ -43,10 +45,14 @@ class FormationController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_formation_show', methods: ['GET'])]
-    public function show(Formation $formation): Response
+    public function show(Formation $formation, ClasseRepository $classeRepository, Security $security): Response
     {
+
+        $classes = $classeRepository->findBy(['formation'=>$formation]);
+
         return $this->render('formation/show.html.twig', [
             'formation' => $formation,
+            'classes' => $classes
         ]);
     }
 
