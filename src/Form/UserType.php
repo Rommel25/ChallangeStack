@@ -28,14 +28,6 @@ class UserType extends AbstractType
             ->add('plainpassword', PasswordType::class, [
                 'required' => true,
             ])
-            ->add('roles', ChoiceType::class, [
-                'choices'  => [
-                    'ADMIN' => 'ADMIN',
-                    'USER' => 'USER',
-                    'TEACHER' => 'TEACHER',
-                ],
-                'expanded'=>true,
-                'multiple'=>true])
         ;
     }
 
