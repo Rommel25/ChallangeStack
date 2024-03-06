@@ -17,8 +17,11 @@ class BaseController extends AbstractController
     #[Route('/', name: 'app_atelier')]
     public function index(FormateurRepository $formateurRepository, Security $security): Response
     {
+        if(!$security->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+        
         // Fetch all ateliers from the repository
-
         $formateur = $formateurRepository->findOneBy(['id'=>$security->getUser()->getId()]);
 
         return $this->render('index.html.twig', [
