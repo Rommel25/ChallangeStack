@@ -6,10 +6,12 @@ use App\Entity\Cours;
 use App\Form\CoursType;
 use App\Repository\CoursRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\ORM\Query\Expr\Func;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\FormateurRepository;
 use App\Repository\CreneauRepository;
 use App\Repository\ClasseRepository;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,12 +20,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class CoursController extends AbstractController
 {
    #[Route('/', name: 'app_cours_index', methods: ['GET'])]
-   public function index(CoursRepository $coursRepository, EntityManagerInterface $entityManager): Response
+   public function index(CoursRepository $coursRepository,FormateurRepository $formateurRepository ,EntityManagerInterface $entityManager, Security $security): Response
    {
+       $formateur = $formateurRepository->findOneBy(['user'=>$security->getUser()->getId()]);
+
        $difficultiesData = $entityManager
            ->createQueryBuilder()
            ->select('c.difficulte', 'c.titre','c.description','c.objectif','c.duree','c.id')
            ->from('App\Entity\Cours', 'c')
+           ->where('c.formateur = '. $formateur->getId())
            ->groupBy('c.difficulte, c.titre','c.description','c.objectif','c.duree','c.id')
            ->getQuery()
            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
