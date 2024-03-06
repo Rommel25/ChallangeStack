@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Evaluation;
 use App\Form\EvaluationType;
+use App\Repository\EleveRepository;
 use App\Repository\EvaluationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/evaluation')]
 class EvaluationController extends AbstractController
@@ -82,4 +86,29 @@ class EvaluationController extends AbstractController
 
         return $this->redirectToRoute('app_evaluation_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/questionnaire/{id}', name: 'app_questionnaire', methods: ['GET', 'POST'])]
+    public function questionnaire($id, Request $request, AuthenticationUtils $authenticationUtils, Security $security, EvaluationRepository $evaluationRepository, SessionInterface $session, EleveRepository $eleveRepository): Response
+    {
+        $questionnaire = $evaluationRepository->findOneBy(['cours'=>$id]);
+        $form = $this->createForm(QuestionnaireType::class, null, [
+            'questionnaire' => $questionnaire
+        ]);
+        $lyceen = $lyceenRepository->findOneBy(['user'=>$this->getUser()]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($form->getData() as $reponse) {
+                $this->entityManager->persist($reponse);
+            };
+            $encryptDataService->hashService($lyceen);
+            $this->entityManager->flush();
+            $session->getFlashBag()->add('success', 'Vos réponses ont bien été enregistrés');
+            return $this->redirectToRoute('app_profile');
+        }
+        return $this->render('lyceen/questionnaire.html.twig', [
+            'form' => $form,
+            'sponsor' => $this->sponsorRepository->findLast()
+        ]);
+    }
+
 }
