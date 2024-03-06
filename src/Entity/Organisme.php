@@ -24,6 +24,9 @@ class Organisme
     #[ORM\ManyToOne(inversedBy: 'organisme')]
     private ?Formateur $formateur = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->formations = new ArrayCollection();
@@ -84,6 +87,18 @@ class Organisme
     public function setFormateur(?Formateur $formateur): static
     {
         $this->formateur = $formateur;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }
