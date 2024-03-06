@@ -126,6 +126,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $formateur->getUser()->setPassword($formateur->getUser()->getPassword());
             $formateur->getUser()->setRoles(["TEACHER"]);
+            $formateur->getUser()->setToken("");
             $this->entityManager->persist($formateur);
             $this->entityManager->flush();
             return $this->redirectToRoute('app_login');
