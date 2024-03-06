@@ -1,33 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Eleve index{% endblock %}
+{% block title %}Liste des Élèves{% endblock %}
 
 {% block body %}
-    <h1>Eleve index</h1>
+    <div class="max-w-4xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto my-8">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Liste des Élèves</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for eleve in eleves %}
-            <tr>
-                <td>{{ eleve.id }}</td>
-                <td>
-                    <a href="{{ path('app_eleve_show', {'id': eleve.id}) }}">show</a>
-                    <a href="{{ path('app_eleve_edit', {'id': eleve.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-6">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">ID</th>
+                    <th scope="col" class="px-6 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for eleve in eleves %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td class="px-6 py-4">{{ eleve.id }}</td>
+                        <td class="px-6 py-4">
+                            <a href="{{ path('app_eleve_show', {'id': eleve.id}) }}" class="text-blue-600 hover:underline me-2">Voir</a>
+                            <a href="{{ path('app_eleve_edit', {'id': eleve.id}) }}" class="text-blue-600 hover:underline">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_eleve_new') }}">Create new</a>
+        <a href="{{ path('app_eleve_new') }}" class="text-blue-600 hover:underline text-sm">Créer un nouvel élève</a>
+    </div>
 {% endblock %}

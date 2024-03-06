@@ -15,11 +15,7 @@ class OrganismeType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('isPublic')
-            ->add('formateur', EntityType::class, [
-                'class' => Formateur::class,
-                'choice_label' => 'id',
-            ]);
+            ->add('isPublic');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
