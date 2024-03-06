@@ -24,12 +24,12 @@ class EleveType extends AbstractType
 'multiple' => true,
                 'required' => false
             ])
-            ->add('creneaux', EntityType::class, [
-                'class' => Creneau::class,
-'choice_label' => 'id',
-'multiple' => true,
-                'required' => false
-            ])
+//            ->add('creneaux', EntityType::class, [
+//                'class' => Creneau::class,
+//'choice_label' => 'id',
+//'multiple' => true,
+//                'required' => false
+//            ])
         ;
     }
 

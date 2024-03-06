@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Formateur;
 use App\Entity\User;
 use App\Form\FirstConnexionType;
+use App\Form\FormateurType;
 use App\Form\LoginType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -82,7 +84,6 @@ class SecurityController extends AbstractController
         $user = $userrepo->findOneBy(['token'=>$id]);
         $form = $this->createForm(FirstConnexionType::class);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()){
             $formData = $form->getData();
             if($formData->getPassword() == $formData->getPlainpassword()){
@@ -111,6 +112,26 @@ class SecurityController extends AbstractController
         return $this->render('security/firstConnexion.html.twig', [
             'form' => $form->createView(),
             'user'=>$user
+        ]);
+    }
+
+    #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
+    public function register(Request $request): Response
+    {
+        $formateur = new Formateur();
+        $form = $this->createForm(FormateurType::class, $formateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formateur->getUser()->setPassword($formateur->getUser()->getPassword());
+            $formateur->getUser()->setRoles(["TEACHER"]);
+            $this->entityManager->persist($formateur);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('security/signin.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
