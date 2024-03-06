@@ -6,6 +6,7 @@ use App\Entity\Cours;
 use App\Form\CoursType;
 use App\Repository\CoursRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Func;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,13 +17,50 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/cours')]
 class CoursController extends AbstractController
 {
-    #[Route('/', name: 'app_cours_index', methods: ['GET'])]
-    public function index(CoursRepository $coursRepository): Response
-    {
-        return $this->render('cours/index.html.twig', [
-            'cours' => $coursRepository->findAll(),
-        ]);
-    }
+   #[Route('/', name: 'app_cours_index', methods: ['GET'])]
+   public function index(CoursRepository $coursRepository, EntityManagerInterface $entityManager): Response
+   {
+       $difficultiesData = $entityManager
+           ->createQueryBuilder()
+           ->select('c.difficulte', 'c.titre','c.description','c.objectif','c.duree','c.id')
+           ->from('App\Entity\Cours', 'c')
+           ->groupBy('c.difficulte, c.titre','c.description','c.objectif','c.duree','c.id')
+           ->getQuery()
+           ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+       // Organiser les données par difficulté et construire un tableau "data" pour chaque difficulté
+       $groupedData = [];
+       foreach ($difficultiesData as $row) {
+           $difficulte = $row['difficulte'];
+           $titre = $row['titre'];
+           $description = $row['description'];
+           $objectif = $row['objectif'];
+           $duree = $row['duree'];
+           $id = $row['id'];
+
+           if (!isset($groupedData[$difficulte])) {
+               $groupedData[$difficulte] = [
+                   'difficulte' => $difficulte,
+                   'data' => [],
+               ];
+           }
+
+           $groupedData[$difficulte]['data'][] = [
+                'titre' => $titre,
+                'description' => $description,
+                'objectif' => $objectif,
+                'duree' => $duree,
+                'id' => $id
+            ];
+       }
+
+       $result = array_values($groupedData);
+
+       return $this->render('cours/index.html.twig', [
+           'cours' => $coursRepository->findAll(),
+           'difficultiesData' => $result,
+       ]);
+   }
 
     #[Route('/new', name: 'app_cours_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
