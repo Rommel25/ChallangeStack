@@ -18,8 +18,11 @@ class BaseController extends AbstractController
     public function index(FormateurRepository $formateurRepository, Security $security): Response
     {
         // Fetch all ateliers from the repository
-
-        $formateur = $formateurRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+        if($security->getUser()){
+            $formateur = $formateurRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+        } else {
+            $formateur = null;
+        }
 
         return $this->render('index.html.twig', [
             "formateur" => $formateur
