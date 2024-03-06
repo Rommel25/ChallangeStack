@@ -30,6 +30,9 @@ class ClasseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($classe->getEleves() as $eleve){
+                $eleve->addClass($classe);
+            }
             $entityManager->persist($classe);
             $entityManager->flush();
 
