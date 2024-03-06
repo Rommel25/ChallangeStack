@@ -17,7 +17,7 @@ class Question
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $type = null;
+    private ?string $intitule = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $reponse_qcm = null;
@@ -41,14 +41,14 @@ class Question
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getIntitule(): ?string
     {
-        return $this->type;
+        return $this->intitule;
     }
 
-    public function setType(?string $type): static
+    public function setIntitule(?string $intitule): static
     {
-        $this->type = $type;
+        $this->intitule = $intitule;
 
         return $this;
     }

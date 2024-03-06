@@ -1,0 +1,7 @@
+{{ form_start(formImg, {'attr': {'class': 'flex flex-col items-start space-y-3'}}) }}
+
+    {{ form_widget(formImg.imageFile, {'attr': {'class': 'file:mr-4 file:py-2 file:px-4 file:rounded file:border file:border-gray-300 file:text-sm file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-100'}}) }}
+
+    <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow">Upload</button>
+
+{{ form_end(formImg) }}

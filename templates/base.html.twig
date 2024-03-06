@@ -38,9 +38,9 @@
           {% if app.user %}
           <div class="flex items-center ml-3">
             <div>
-              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
+              <button type="button" class="flex text-sm bg-gray-400 rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
                 <span class="sr-only">Open user menu</span>
-                <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                <img src="data:{{ app.user.image.getContentType() }};base64,{{ app.user.image.data }}" alt="Profile Image" class="w-8 h-8 rounded-full" />
               </button>
             </div>
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-2" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(825px, 58px, 0px);" data-popper-placement="bottom">
