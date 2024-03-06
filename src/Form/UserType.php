@@ -31,7 +31,6 @@ class UserType extends AbstractType
                 ],
                 'expanded'=>true,
                 'multiple'=>true])
-            ->add('token')
         ;
     }
 

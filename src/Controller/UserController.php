@@ -10,15 +10,39 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
+use function Symfony\Component\Translation\t;
+
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, Security $security): Response
     {
+         $user = $userRepository->findOneBy(['id'=>$security->getUser()->getId()]);
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+             'userId' => $user,
+        ]);
+    }
+
+    #[Route('/profile', name: 'profile', methods: ['GET', 'POST'])]
+    public function profile(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security): Response
+    {
+        $user = $userRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+//        dd($user);
+        return $this->render('user/edit.html.twig', [
+            'userId' => $user,
+            'form' => $form,
         ]);
     }
 
@@ -37,7 +61,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/new.html.twig', [
-            'user' => $user,
+            'userId' => $user,
             'form' => $form,
         ]);
     }
@@ -46,7 +70,8 @@ class UserController extends AbstractController
     public function show(User $user): Response
     {
         return $this->render('user/show.html.twig', [
-            'user' => $user,
+            'userId' => $user,
+            'user' => $user
         ]);
     }
 
@@ -63,7 +88,7 @@ class UserController extends AbstractController
         }
 //        dd($user);
         return $this->render('user/edit.html.twig', [
-            'user' => $user,
+            'userId' => $user,
             'form' => $form,
         ]);
     }
@@ -76,6 +101,8 @@ class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_user_index', [
+            'userId' => $user,
+        ], Response::HTTP_SEE_OTHER);
     }
 }

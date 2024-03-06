@@ -30,6 +30,9 @@ class ClasseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($classe->getEleves() as $eleve){
+                $eleve->addClass($classe);
+            }
             $entityManager->persist($classe);
             $entityManager->flush();
 
@@ -57,6 +60,9 @@ class ClasseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($classe->getEleves() as $eleve){
+                $eleve->addClass($classe);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_classe_index', [], Response::HTTP_SEE_OTHER);
