@@ -1,11 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}
+  Edit User
+{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl py-5">Mon profile</h1>
+  <h1 class="text-2xl py-5">Mon profile</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+  <div class="flex flex-col">
+    {% if app.user and app.user.image and app.user.image.data %}
+      <a href="{{ path('app_user_image') }}" class="block w-28 h-28 rounded-full overflow-hidden shadow-lg border-2 border-gray-300 mb-4"><img src="data:{{ app.user.image.getContentType() }};base64,{{ app.user.image.data }}" alt="Profile Image" class="object-cover w-full h-full" /></a>
+    {% else %}
+      <p class="text-gray-500 mb-4">Pas d'image de profil disponible.</p> {# mb-4 pour la cohérence de l'espace #}
+    {% endif %}
 
-    {{ include('user/_delete_form.html.twig') }}
+    {{ include('image/image.html.twig', { button_label: 'Update' }) }}
+  </div>
+
+  {{ include('user/_form.html.twig', { button_label: 'Update' }) }}
+
+  {{ include('user/_delete_form.html.twig') }}
 {% endblock %}
