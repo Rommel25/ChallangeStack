@@ -32,7 +32,7 @@ class EleveController extends AbstractController
         $eleve = new Eleve();
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
-
+//        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
             $eleve->getUser()->setPassword('');
             $eleve->getUser()->setPlainPassword('');
