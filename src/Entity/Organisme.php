@@ -27,6 +27,9 @@ class Organisme
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Image $Image = null;
+
     public function __construct()
     {
         $this->formations = new ArrayCollection();
@@ -99,6 +102,18 @@ class Organisme
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->Image;
+    }
+
+    public function setImage(?Image $Image): static
+    {
+        $this->Image = $Image;
 
         return $this;
     }
