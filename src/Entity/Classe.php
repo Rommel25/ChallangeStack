@@ -18,7 +18,7 @@ class Classe
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $section = null;
 
-    #[ORM\ManyToMany(targetEntity: Eleve::class, inversedBy: 'classes')]
+    #[ORM\ManyToMany(targetEntity: Eleve::class, mappedBy: 'classes')]
     private Collection $eleves;
 
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'classe')]
@@ -26,6 +26,12 @@ class Classe
 
     #[ORM\ManyToOne(inversedBy: 'classes')]
     private ?Formation $formation = null;
+
+    public function __toString(): string
+    {
+        return $this->section . $this->id;
+    }
+
 
     public function __construct()
     {
