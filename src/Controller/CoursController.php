@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\CreneauRepository;
+use App\Repository\ClasseRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/cours')]
@@ -43,10 +45,17 @@ class CoursController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_cours_show', methods: ['GET'])]
-    public function show(Cours $cour): Response
+    public function show(Cours $cour,CreneauRepository $creneauRepository, ClasseRepository $classeRepository): Response
     {
+        $classesByCours = $creneauRepository->findBy(['cours'=>$cour]);
+        $responses = [];
+        foreach ($classesByCours as $classe){
+            $responses[] = $classeRepository->findBy(['id'=>$classe->getClasse()->getId()]);
+        };
+
         return $this->render('cours/show.html.twig', [
             'cour' => $cour,
+            'classesByCours' => $responses
         ]);
     }
 

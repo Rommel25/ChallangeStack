@@ -66,4 +66,31 @@
       {{ include('cours/_delete_form.html.twig') }}
     </div>
   </div>
+  <div class="py-4">
+    <p class="text-2xl font-bold mb-4">Liste des classes ayant ce cours :</p>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">ID</th>
+        <th scope="col" class="px-6 py-3">Section</th>
+        <th scope="col" class="px-6 py-3">Voir</th>
+        <th scope="col" class="px-6 py-3">Modifier</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for classe in classesByCours %}
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ classe[0].id }}</th>
+          <td class="px-6 py-4">{{ classe[0].section }}</td>
+          <td class="px-6 py-4">
+            <a href="{{ path('app_classe_show', { id: classe[0].id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+          </td>
+          <td class="px-6 py-4">
+            <a href="{{ path('app_classe_edit', { id: classe[0].id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
