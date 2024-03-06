@@ -38,9 +38,15 @@
           {% if app.user %}
           <div class="flex items-center ml-3">
             <div>
-              <button type="button" class="flex text-sm bg-gray-400 rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
+              <button type="button" class="flex text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
                 <span class="sr-only">Open user menu</span>
-                <img src="data:{{ app.user.image.getContentType() }};base64,{{ app.user.image.data }}" alt="Profile Image" class="w-8 h-8 rounded-full" />
+                {% if app.user and app.user.image and app.user.image.data %}
+                  <img src="data:{{ app.user.image.getContentType() }};base64,{{ app.user.image.data }}" alt="Profile Image" class="w-8 h-8 rounded-full" />
+                {% else %}
+                  <svg class="w-8 h-8 rounded-full text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                  </svg>
+                {% endif %}
               </button>
             </div>
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-2" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(825px, 58px, 0px);" data-popper-placement="bottom">
