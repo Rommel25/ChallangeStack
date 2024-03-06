@@ -22,7 +22,7 @@ class BaseController extends AbstractController
         }
         
         // Fetch all ateliers from the repository
-        if($security->getUser()){            $formateur = $formateurRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+        if($security->getUser()){$formateur = $formateurRepository->findOneBy(['user'=>$security->getUser()->getId()]);
         } else {
             $formateur = null;
         }
