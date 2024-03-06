@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,13 +17,11 @@ class UserCreateType extends AbstractType
     {
         $builder
             ->add('email')
-//            ->add('nom')
-//            ->add('prenom')
-//            ->add('plainpassword', RepeatedType::class, [
-//                'type' => PasswordType::class,
-//                'first_options' => ['label' => 'Password'],
-//                'second_options' => ['label' => 'Repeat Password'],
-//            ])
+            ->add('nom', options: ['required'=>false])
+            ->add('prenom', options: ['required'=>false])
+            ->add('password', PasswordType::class, ["required"=>false])
+            ->add('plainpassword', PasswordType::class, ["required"=>false])
+            ->add('submit', SubmitType::class)
             // Add other User fields
         ;
     }

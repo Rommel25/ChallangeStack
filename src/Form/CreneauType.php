@@ -3,27 +3,33 @@
 namespace App\Form;
 
 use App\Entity\Classe;
+use App\Entity\Cours;
+use App\Entity\Creneau;
 use App\Entity\Eleve;
-use App\Entity\Formation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ClasseType extends AbstractType
+class CreneauType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('section')
+            ->add('debut')
+            ->add('fin')
+            ->add('classe', EntityType::class, [
+                'class' => Classe::class,
+'choice_label' => 'id',
+            ])
+            ->add('cours', EntityType::class, [
+                'class' => Cours::class,
+'choice_label' => 'id',
+            ])
             ->add('eleves', EntityType::class, [
                 'class' => Eleve::class,
 'choice_label' => 'id',
 'multiple' => true,
-            ])
-            ->add('formation', EntityType::class, [
-                'class' => Formation::class,
-'choice_label' => 'id',
             ])
         ;
     }
@@ -31,7 +37,7 @@ class ClasseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Classe::class,
+            'data_class' => Creneau::class,
         ]);
     }
 }

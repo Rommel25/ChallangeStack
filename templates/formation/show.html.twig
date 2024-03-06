@@ -22,10 +22,10 @@
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ classe.id }}</th>
             <td class="px-6 py-4">{{ classe.section }}</td>
             <td class="px-6 py-4">
-                <a href="{{ path('app_formation_show', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+                <a href="{{ path('app_classe_show', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
             </td>
             <td class="px-6 py-4">
-                <a href="{{ path('app_formation_edit', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+                <a href="{{ path('app_classe_edit', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
             </td>
         </tr>
     {% endfor %}
