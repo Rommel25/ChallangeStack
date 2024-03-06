@@ -3,11 +3,9 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Modification du profile</h1>
+    <h1 class="text-2xl py-5">Mon profile</h1>
 
     {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_atelier') }}">back to list</a>
 
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}
