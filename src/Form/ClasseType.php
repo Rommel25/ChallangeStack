@@ -17,7 +17,7 @@ class ClasseType extends AbstractType
         $builder
             ->add('section')
             ->add('eleves', EntityType::class, [
-                'class' => eleve::class,
+                'class' => Eleve::class,
 'choice_label' => 'id',
 'multiple' => true,
             ])
