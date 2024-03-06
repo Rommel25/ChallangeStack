@@ -16,7 +16,7 @@ class ExamenController extends AbstractController
     {
     }
 
-    #[Route(path: '/createExamen', name: 'signin')]
+    #[Route(path: '/createExamen', name: 'create_examen')]
     public function createExamen(Request $request): Response
     {
         $evaluation = new Evaluation();
