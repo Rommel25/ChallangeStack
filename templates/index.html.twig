@@ -1,5 +1,34 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src='fullcalendar/core/locales-all.global.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        if (calendarEl){
+            $.get( "/creneau/calendar", function( data ) {
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    locale: 'fr',
+                    allDayText: 'Journée complete',
+                    firstDay: 1,
+                    initialView: 'timeGridWeek',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    events: data
+                });
+                calendar.setOption('locale', 'fr');
+                calendar.render();
+            });
+        }
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="flex flex-col gap-y-4 justify-center items-center h-full">
         {% if formateur and formateur.organisme|length > 0 %}
@@ -39,6 +68,6 @@
             </a>
         </div>
     </div>
+
+    <div id="calendar"></div>
 {% endblock %}
-
-

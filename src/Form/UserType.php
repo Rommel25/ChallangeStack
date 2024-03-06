@@ -12,6 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UserType extends AbstractType
 {
@@ -21,16 +22,12 @@ class UserType extends AbstractType
             ->add('email')
             ->add('nom')
             ->add('prenom')
-            ->add('password')
-            ->add('plainpassword')
-            ->add('roles', ChoiceType::class, [
-                'choices'  => [
-                    'ADMIN' => 'ADMIN',
-                    'USER' => 'USER',
-                    'TEACHER' => 'TEACHER',
-                ],
-                'expanded'=>true,
-                'multiple'=>true])
+            ->add('password', PasswordType::class, [
+                'required' => true,
+            ])
+            ->add('plainpassword', PasswordType::class, [
+                'required' => true,
+            ])
         ;
     }
 

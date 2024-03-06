@@ -1,4 +1,4 @@
-{{ form_start(form, {'attr': {'class': 'max-w-md mx-auto'}}) }}
+{{ form_start(form, {'attr': {'class': 'max-w-md'}}) }}
 
 {% for field in form %}
 {% if field.vars.name != '_token' and field.vars.name != 'token' %}
@@ -17,7 +17,7 @@
     </div>
     {% endif %}
 {% endfor %}
-
+<a href="{{ path('app_atelier') }}">
 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">{{ button_label|default('Submit') }}</button>
-
+</a>
 {{ form_end(form) }}

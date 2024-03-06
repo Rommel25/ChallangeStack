@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\FirstConnexionType;
 use App\Form\FormateurType;
 use App\Form\LoginType;
+use App\Form\UserCreateType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,8 +38,7 @@ class SecurityController extends AbstractController
             $formData = $form->getData();
             $mail = $formData->getEmail();
             $user = $userrepo->findOneBy(["email" => $mail]);
-//            dd(($formData->getPassword()) == $user->getPassword());
-            if (($formData->getPassword()) == $user->getPassword()) {
+            if ((sha1($formData->getPassword())) == $user->getPassword()) {
                 $roles = [];
                 if (in_array('ADMIN', $user->getRoles())) {
                     $roles[] = 'ADMIN';
@@ -82,12 +82,12 @@ class SecurityController extends AbstractController
     {
         $userrepo = $this->entityManager->getRepository(User::class);
         $user = $userrepo->findOneBy(['token'=>$id]);
-        $form = $this->createForm(FirstConnexionType::class);
+        $form = $this->createForm(UserCreateType::class, $user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $formData = $form->getData();
             if($formData->getPassword() == $formData->getPlainpassword()){
-                $user->setPassword($formData->getPassword());
+                $user->setPassword(sha1($formData->getPassword()));
                 $roles = [];
 
                 if (in_array('USER',$user->getRoles())) {
@@ -123,8 +123,9 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formateur->getUser()->setPassword($formateur->getUser()->getPassword());
+            $formateur->getUser()->setPassword(sha1($formateur->getUser()->getPassword()));
             $formateur->getUser()->setRoles(["TEACHER"]);
+            $formateur->getUser()->setToken("");
             $this->entityManager->persist($formateur);
             $this->entityManager->flush();
             return $this->redirectToRoute('app_login');
