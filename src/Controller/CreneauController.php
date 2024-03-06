@@ -81,7 +81,6 @@ class CreneauController extends AbstractController
     {
         $user = $security->getUser();
         $formateur = $entityManager->getRepository(Formateur::class)->findOneBy(['user' => $user]);
-
         $cours = $entityManager->getRepository(Cours::class)->findBy(['formateur' => $formateur]);
         $response = [];
         foreach ($cours as $cour) {
