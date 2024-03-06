@@ -21,7 +21,7 @@
       </thead>
       <tbody>
         {% for cour in cours %}
-          {% if app.user and cour.formateur.id == app.user.id %}
+          {% if app.user and cour.formateur.user.id == app.user.id %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <td class="px-6 py-4">{{ cour.titre }}</td>
               <td class="px-6 py-4">{{ cour.description }}</td>
