@@ -1,33 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Communication index{% endblock %}
-
 {% block body %}
-    <h1>Communication index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+        Vos communications<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Parcourez la liste de vos communications.</p>
+      </caption>
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3">ID</th>
+          <th scope="col" class="px-6 py-3 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for communication in communications %}
-            <tr>
-                <td>{{ communication.id }}</td>
-                <td>
-                    <a href="{{ path('app_communication_show', {'id': communication.id}) }}">show</a>
-                    <a href="{{ path('app_communication_edit', {'id': communication.id}) }}">edit</a>
-                </td>
+          {% if app.user and (communication.formateur.user.id == app.user.id or communication.eleve.user.id == app.user.id) %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ communication.id }}</th>
+              <td class="px-6 py-4 text-right">
+                <a href="{{ path('app_communication_show', { id: communication.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Chat</a>
+              </td>
             </tr>
+          {% endif %}
         {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
+          <tr class="bg-white dark:bg-gray-800">
+            <td colspan="2" class="px-6 py-4">Aucune communication trouvée</td>
+          </tr>
         {% endfor %}
-        </tbody>
+      </tbody>
     </table>
+  </div>
 
-    <a href="{{ path('app_communication_new') }}">Create new</a>
+  <a href="{{ path('app_communication_new') }}" class="mt-4 inline-block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Créer une nouvelle communication</a>
 {% endblock %}
