@@ -38,6 +38,7 @@
                 </caption>
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
+                    <th scope="col" class="px-6 py-3">Photo</th>
                     <th scope="col" class="px-6 py-3">Nom</th>
                     <th scope="col" class="px-6 py-3">Voir formations</th>
                     <th scope="col" class="px-6 py-3">Modifier l'organisme</th>
@@ -46,7 +47,14 @@
                 <tbody>
                 {% for organisme in formateur.organisme %}
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                         {% if organisme.image and organisme.image.data %}
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">    
+                        <div class="block w-10 h-10 rounded-full overflow-hidden shadow-lg border-2 border-gray-300 mb-4"><img src="data:{{ organisme.image.getContentType() }};base64,{{ organisme.image.data }}" alt="Profile Image" class="object-contain w-full h-full" /></div></th>
+                         {% else %}
+                         <p class="text-gray-500 mb-4">Pas d'image de profil disponible.</p>
+                          {% endif %}
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ organisme.name }}</th>
+
                         <td class="px-6 py-4">
                             <a href="{{ path('app_organisme_show', { id: organisme.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir formations</a>
                         </td>
