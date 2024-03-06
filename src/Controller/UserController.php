@@ -27,8 +27,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/profile', name: 'profile', methods: ['GET', 'POST'])]
-    public function profile(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security): Response
+    #[Route('/profil', name: 'profil', methods: ['GET', 'POST'])]
+    public function profil(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security): Response
     {
         $user = $userRepository->findOneBy(['id'=>$security->getUser()->getId()]);
         $form = $this->createForm(UserType::class, $user);
@@ -37,7 +37,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('profil', [], Response::HTTP_SEE_OTHER);
         }
 //        dd($user);
         return $this->render('user/edit.html.twig', [
