@@ -47,10 +47,14 @@
       {% for message in communication.messages %}
         <div class="{{ app.user and message.expediteur.id == app.user.id ? 'self-end' : 'self-start' }}">
           <div class="flex items-end {{ app.user and message.expediteur.id == app.user.id ? 'flex-row-reverse space-x-reverse space-x-2' : 'space-x-2' }}">
-            <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-              <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-              </svg>
+            <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 flex justify-center items-center">
+              {% if message.expediteur and message.expediteur.image and message.expediteur.image.data %}
+                <img src="data:{{ message.expediteur.image.getContentType() }};base64,{{ message.expediteur.image.data }}" alt="Profile Image" class="absolute w-8 h-8" />
+              {% else %}
+                <svg class="w-12 h-12 rounded-full text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+              {% endif %}
             </div>
             <div class="{{ app.user and message.expediteur.id == app.user.id ? 'bg-blue-200 dark:bg-blue-700' : 'bg-gray-100 dark:bg-gray-700' }}  p-4 rounded-lg max-w-md">
               <div class="text-sm">
