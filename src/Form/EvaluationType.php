@@ -17,7 +17,6 @@ class EvaluationType extends AbstractType
         $builder
             ->add('cours', EntityType::class, [
                 'class' => Cours::class,
-'choice_label' => 'id',
             ])
             ->add('questions', EntityType::class, [
                 'class' => Question::class,

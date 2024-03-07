@@ -20,7 +20,6 @@ class EleveType extends AbstractType
             ->add('user', UserCreateType::class)
             ->add('classes', EntityType::class, [
                 'class' => Classe::class,
-'choice_label' => 'id',
 'multiple' => true,
                 'required' => false
             ])

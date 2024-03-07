@@ -22,7 +22,6 @@ class ClasseType extends AbstractType
             ])
             ->add('formation', EntityType::class, [
                 'class' => Formation::class,
-'choice_label' => 'id',
             ])
         ;
     }

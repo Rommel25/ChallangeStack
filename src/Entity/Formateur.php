@@ -27,6 +27,11 @@ class Formateur
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    public function __toString(): string
+    {
+        return (string) $this->user;
+    }
+
     public function __construct()
     {
         $this->communications = new ArrayCollection();

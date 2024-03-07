@@ -24,6 +24,11 @@ class Formation
     #[ORM\ManyToOne(inversedBy: 'formations')]
     private ?Organisme $organisme = null;
 
+    public function __toString(): string
+    {
+        return $this->libelle;
+    }
+
     public function __construct()
     {
         $this->classes = new ArrayCollection();

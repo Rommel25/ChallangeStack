@@ -20,15 +20,12 @@ class CreneauType extends AbstractType
             ->add('fin')
             ->add('classe', EntityType::class, [
                 'class' => Classe::class,
-'choice_label' => 'id',
             ])
             ->add('cours', EntityType::class, [
                 'class' => Cours::class,
-'choice_label' => 'id',
             ])
             ->add('eleves', EntityType::class, [
                 'class' => Eleve::class,
-'choice_label' => 'id',
 'multiple' => true,
             ])
         ;

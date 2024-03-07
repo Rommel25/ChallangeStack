@@ -49,6 +49,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Image $image = null;
 
+    public function __toString(): string
+    {
+        return (string) $this->nom . ' ' . $this->prenom;
+    }
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
