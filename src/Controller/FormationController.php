@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Formation;
 use App\Form\FormationType;
 use App\Repository\FormationRepository;
+use App\Repository\OrganismeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,10 +25,14 @@ class FormationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_formation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{idOrg}', name: 'app_formation_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, $idOrg, OrganismeRepository $organismeRepository): Response
     {
+
         $formation = new Formation();
+        $organisme = $organismeRepository->find($idOrg);
+        $formation->setOrganisme($organisme);
+
         $form = $this->createForm(FormationType::class, $formation);
         $form->handleRequest($request);
 
@@ -35,7 +40,7 @@ class FormationController extends AbstractController
             $entityManager->persist($formation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_formation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_organisme_show', ['id' => $idOrg], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('formation/new.html.twig', [

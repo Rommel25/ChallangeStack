@@ -51,7 +51,7 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">    
                         <div class="block w-10 h-10 rounded-full overflow-hidden shadow-lg border-2 border-gray-300 mb-4"><img src="data:{{ organisme.image.getContentType() }};base64,{{ organisme.image.data }}" alt="Profile Image" class="object-contain w-full h-full" /></div></th>
                          {% else %}
-                         <td class="px-6 py-4">Pas de photo</td>
+                         <th class="text-gray-500 mb-4">Pas d'image</th>
                           {% endif %}
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ organisme.name }}</th>
 

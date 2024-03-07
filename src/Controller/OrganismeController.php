@@ -44,7 +44,7 @@ class OrganismeController extends AbstractController
             $entityManager->persist($organisme);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_organisme_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_atelier', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('organisme/new.html.twig', [
@@ -70,7 +70,7 @@ class OrganismeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_organisme_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_atelier  ', [], Response::HTTP_SEE_OTHER);
         }
 
         $formImg = $this->createForm(ImageType::class);

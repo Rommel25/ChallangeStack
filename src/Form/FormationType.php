@@ -15,10 +15,6 @@ class FormationType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('organisme', EntityType::class, [
-                'class' => Organisme::class,
-'choice_label' => 'id',
-            ])
         ;
     }
 
