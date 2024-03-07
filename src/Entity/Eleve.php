@@ -34,6 +34,10 @@ class Eleve
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    public function __toString(): string
+    {
+        return (string) $this->user->getNom() . ' ' . $this->user->getPrenom();
+    }
     public function __construct()
     {
         $this->classes = new ArrayCollection();
