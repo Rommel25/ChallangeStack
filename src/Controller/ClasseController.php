@@ -10,7 +10,6 @@ use App\Form\ClasseType;
 use App\Form\CsvImportType;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
-use App\Repository\EleveRepository;
 use App\Repository\ClasseRepository;
 use App\Repository\EleveRepository;
 use App\Repository\FormationRepository;
