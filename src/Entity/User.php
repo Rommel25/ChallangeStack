@@ -43,12 +43,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 500)]
     private ?string $token;
 
+    #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'createdBy')]
+    private Collection $creneaux;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Image $image = null;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->creneaux = new ArrayCollection();
     }
 
     /**
@@ -230,6 +234,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    /**
+     * @return Collection<int, Creneau>
+     */
+    public function getCreneaux(): Collection
+    {
+        return $this->creneaux;
+    }
+
+    public function addCreneaux(Creneau $creneaux): static
+    {
+        if (!$this->creneaux->contains($creneaux)) {
+            $this->creneaux->add($creneaux);
+            $creneaux->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreneaux(Creneau $creneaux): static
+    {
+        if ($this->creneaux->removeElement($creneaux)) {
+            // set the owning side to null (unless already changed)
+            if ($creneaux->getCreatedBy() === $this) {
+                $creneaux->setCreatedBy(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getImage(): ?Image
