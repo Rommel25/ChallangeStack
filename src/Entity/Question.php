@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\enum\TypeQuestionEnum;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,6 +20,9 @@ class Question
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $intitule = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $type = TypeQuestionEnum::CLOSE;
+
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $reponse_qcm = null;
 
@@ -31,9 +35,13 @@ class Question
     #[ORM\OneToMany(targetEntity: Reponse::class, mappedBy: 'question')]
     private Collection $reponses;
 
+    #[ORM\OneToMany(targetEntity: Proposition::class, mappedBy: 'question', cascade: ['persist', 'remove'])]
+    private Collection $propositions;
+
     public function __construct()
     {
         $this->reponses = new ArrayCollection();
+        $this->propositions = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -41,6 +49,21 @@ class Question
         return $this->intitule;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string|null $type
+     */
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +142,36 @@ class Question
             // set the owning side to null (unless already changed)
             if ($reponse->getQuestion() === $this) {
                 $reponse->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Proposition>
+     */
+    public function getPropositions(): Collection
+    {
+        return $this->propositions;
+    }
+
+    public function addProposition(Proposition $proposition): static
+    {
+        if (!$this->propositions->contains($proposition)) {
+            $this->propositions->add($proposition);
+            $proposition->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProposition(Proposition $proposition): static
+    {
+        if ($this->propositions->removeElement($proposition)) {
+            // set the owning side to null (unless already changed)
+            if ($proposition->getQuestion() === $this) {
+                $proposition->setQuestion(null);
             }
         }
 

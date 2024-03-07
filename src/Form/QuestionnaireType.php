@@ -8,6 +8,7 @@ use App\Repository\ReponseRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class QuestionnaireType extends AbstractType
 {
@@ -19,16 +20,16 @@ class QuestionnaireType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $quetionnaire = $options['questionnaire'];
-//        dd($quetionnaire);
+        $questionnaire = $options['questionnaire'];
+//        dd($questionnaire);
 //        $questions = '';
 //        foreach ($quetionnaire->getQuestion() as $question){
 //            $questions .= $question->getQuestion();
 //        }
 //        dd($questions);
 
-        foreach ($quetionnaire->getQuestions() as $question){
-
+        foreach ($questionnaire->getQuestions() as $question){
+//dd($question);
             $eleve = $this->eleveRepository->findOneBy(['user'=>$this->security->getUser()]);
 //            dd($lyceen);
             $reponse = $this->reponseRepository->findOneBy(['eleve'=>$eleve, 'question' => $question]);
@@ -44,6 +45,13 @@ class QuestionnaireType extends AbstractType
         }
 
 
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'questionnaire' => null,
+        ]);
     }
 
 }
