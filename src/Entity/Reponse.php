@@ -30,6 +30,12 @@ class Reponse
     #[ORM\ManyToOne(inversedBy: 'reponses')]
     private ?Eleve $eleve = null;
 
+    public function __toString(): string
+    {
+        return $this->question;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

@@ -106,9 +106,9 @@ class EvaluationController extends AbstractController
 //            $encryptDataService->hashService($lyceen);
             $entityManager->flush();
             $session->getFlashBag()->add('success', 'Vos réponses ont bien été enregistrés');
-            return $this->redirectToRoute('app_profil');
+            return $this->redirectToRoute('profil');
         }
-        return $this->render('lyceen/questionnaire.html.twig', [
+        return $this->render('evaluation/reponse.html.twig', [
             'form' => $form,
 //            'sponsor' => $this->sponsorRepository->findLast()
         ]);

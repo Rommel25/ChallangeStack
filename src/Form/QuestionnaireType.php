@@ -27,16 +27,17 @@ class QuestionnaireType extends AbstractType
 //            $questions .= $question->getQuestion();
 //        }
 //        dd($questions);
-
+//        dd('ici');
         foreach ($questionnaire->getQuestions() as $question){
 //dd($question);
-            $eleve = $this->eleveRepository->findOneBy(['user'=>$this->security->getUser()]);
-//            dd($lyceen);
+            $eleve = $this->eleveRepository->findOneBy(['user'=>$this->security->getUser()->getId()]);
+//            dd($eleve);
             $reponse = $this->reponseRepository->findOneBy(['eleve'=>$eleve, 'question' => $question]);
-
+//            dd($reponse);
             if($reponse == null){
                 $reponse = (new Reponse())->setQuestion($question)->setEleve($eleve);
             }
+
             $builder
                 ->add('reponse' . $question->getId(), ReponseType::class, [
                     'data' => $reponse,
