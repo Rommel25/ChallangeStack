@@ -97,17 +97,20 @@ class CoursController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_cours_show', methods: ['GET'])]
-    public function show(Cours $cour,CreneauRepository $creneauRepository, ClasseRepository $classeRepository): Response
+    public function show(Cours $cour,CreneauRepository $creneauRepository, ClasseRepository $classeRepository, CoursRepository $coursRepository): Response
     {
-        $classesByCours = $creneauRepository->findBy(['cours'=>$cour]);
-        $responses = [];
-        foreach ($classesByCours as $classe){
-            $responses[] = $classeRepository->findBy(['id'=>$classe->getClasse()->getId()]);
-        };
+//        $classesByCours = $creneauRepository->findBy(['cours'=>$cour]);
+//        $classesByCours = $classeRepository->findBy(['cours'=>$cour->getId()]);
+//        dd($classesByCours);
+//        $responses = [];
+//        foreach ($classesByCours as $classe){
+//            $responses[] = $classeRepository->findBy(['id'=>$classe->getClasse()->getId()]);
+//        };
+        $classes = $cour->getClasses();
 
         return $this->render('cours/show.html.twig', [
             'cour' => $cour,
-            'classesByCours' => $responses
+            'classesByCours' => $classes
         ]);
     }
 
