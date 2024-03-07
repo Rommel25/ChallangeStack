@@ -15,10 +15,12 @@ class FirstConnexionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('password',PasswordType::class)
-            ->add('plainpassword',PasswordType::class)
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('password', PasswordType::class)
+            ->add('plainpassword', PasswordType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Se connecter',
+                'attr' => ['class' => 'btn btn-primary'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -27,5 +29,4 @@ class FirstConnexionType extends AbstractType
             'data_class' => User::class,
         ]);
     }
-
 }
