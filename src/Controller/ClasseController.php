@@ -6,6 +6,7 @@ use App\Entity\Classe;
 use App\Form\ClasseType;
 use App\Repository\ClasseRepository;
 use App\Repository\EleveRepository;
+use App\Repository\FormationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,12 +24,16 @@ class ClasseController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_classe_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{idF}', name: 'app_classe_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager,$idF, FormationRepository $formationRepository): Response
     {
         $classe = new Classe();
         $form = $this->createForm(ClasseType::class, $classe);
         $form->handleRequest($request);
+
+        $formation = $formationRepository->find($idF);
+        $classe->setFormation($formation);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($classe->getEleves() as $eleve){
@@ -37,7 +42,7 @@ class ClasseController extends AbstractController
             $entityManager->persist($classe);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_classe_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_formation_show', ['id' => $idF], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('classe/new.html.twig', [

@@ -18,12 +18,6 @@ class EleveType extends AbstractType
     {
         $builder
             ->add('user', UserCreateType::class)
-            ->add('classes', EntityType::class, [
-                'class' => Classe::class,
-'choice_label' => 'id',
-'multiple' => true,
-                'required' => false
-            ])
 //            ->add('creneaux', EntityType::class, [
 //                'class' => Creneau::class,
 //'choice_label' => 'id',
