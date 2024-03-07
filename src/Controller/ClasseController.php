@@ -2,15 +2,22 @@
 
 namespace App\Controller;
 
+use League\Csv\Reader;
+use App\Entity\Eleve;
 use App\Entity\Classe;
+use App\Entity\User;
 use App\Form\ClasseType;
-use App\Repository\ClasseRepository;
+use App\Form\CsvImportType;
+use Symfony\Component\Mime\Email;
+use App\Repository\UserRepository;
 use App\Repository\EleveRepository;
+use App\Repository\ClasseRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/classe')]
 class ClasseController extends AbstractController
@@ -59,7 +66,7 @@ class ClasseController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_classe_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Classe $classe, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Classe $classe, EntityManagerInterface $entityManager, UserRepository $userRepository, MailerInterface $mailer): Response
     {
         $form = $this->createForm(ClasseType::class, $classe);
         $form->handleRequest($request);
@@ -73,9 +80,59 @@ class ClasseController extends AbstractController
             return $this->redirectToRoute('app_classe_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $formCsv = $this->createForm(CsvImportType::class);
+        $formCsv->handleRequest($request);
+
+        if ($formCsv->isSubmitted() && $formCsv->isValid()) {
+            $csvFile = $formCsv->get('csv_file')->getData();
+            
+            if (($handle = fopen($csvFile->getPathname(), 'r')) !== false) {
+                while (($data = fgetcsv($handle, 1000, ';')) !== false) {
+                    // $data est un tableau contenant les valeurs des colonnes pour une ligne
+                    $firstName = $data[0];
+                    $lastName = $data[1];
+                    $email = $data[2];
+                    
+                    // Faites ce que vous voulez avec les données de chaque ligne ici
+                    if ($userRepository->findOneBy(['email' => $email]) == null) {
+                        $eleveUser = new User();
+                        $eleveUser->setPrenom($firstName)
+                                  ->setNom($lastName)
+                                  ->setEmail($email)
+                                  ->setPassword('')
+                                  ->setPlainPassword('');
+                        $uniqueId = uniqid();
+                        $eleveUser->setToken($uniqueId);
+                        $entityManager->persist($eleveUser);
+    
+                        $eleve = new Eleve();
+                        $eleve->setUser($eleveUser);
+                        $eleve->addClass($classe);
+                        $entityManager->persist($eleve);
+    
+                        $email = (new Email())
+                                ->from('support@academiaflow.com')
+                                ->to($eleve->getUser()->getEmail())
+                                ->subject('Inscription à AcademiaFlow')
+                                ->text('Sending emails is fun again!')
+                                ->html('<p>Set password here http://challenge.local/premiereconnexion/'.$uniqueId.'</p>');
+    
+                        $mailer->send($email);
+                    }
+                }
+                $entityManager->flush();
+                fclose($handle);
+            } else {
+                // Gérer l'erreur si le fichier ne peut pas être ouvert
+                echo "Erreur lors de l'ouverture du fichier CSV.";
+            }
+            // Faire quelque chose avec les données du fichier CSV (par exemple, les enregistrer en base de données)
+        }
+
         return $this->render('classe/edit.html.twig', [
             'classe' => $classe,
             'form' => $form,
+            'formCsv' => $formCsv->createView(),
         ]);
     }
 

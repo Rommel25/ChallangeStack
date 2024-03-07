@@ -31,6 +31,9 @@ class Creneau
     #[ORM\ManyToMany(targetEntity: Eleve::class, inversedBy: 'creneaux')]
     private Collection $eleves;
 
+    #[ORM\ManyToOne(inversedBy: 'creneaux')]
+    private ?user $createdBy = null;
+
     public function __construct()
     {
         $this->eleves = new ArrayCollection();
@@ -109,6 +112,18 @@ class Creneau
     public function removeElefe(Eleve $elefe): static
     {
         $this->eleves->removeElement($elefe);
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?user
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?user $createdBy): static
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

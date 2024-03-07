@@ -19,6 +19,11 @@
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay'
                     },
+                    dateClick: function(info) {
+                        $.post("/creneau/calendarNew", {date: info.dateStr}, function(data) {
+                            
+                        });
+                    },
                     events: data
                 });
                 calendar.setOption('locale', 'fr');
