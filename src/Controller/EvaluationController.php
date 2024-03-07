@@ -117,6 +117,7 @@ class EvaluationController extends AbstractController
             $note->setEleve($eleve);
             $note->setEvaluation($questionnaire);
             $note->setNote($pts);
+            // dd($note, $eleve);
             $eleve->addNote($note);
 //            $encryptDataService->hashService($lyceen);
             $entityManager->persist($note, $eleve);
