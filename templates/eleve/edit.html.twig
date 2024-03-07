@@ -34,8 +34,10 @@
       </ol>
     </nav>
   </div>
-  <h1 class="text-2xl py-5">Modifier l'élève</h1>
+  <section class="max-w-sm mx-auto">
+    <h1 class="text-2xl py-5">Modifier l'élève</h1>
 
-  <section class="max-w-sm mx-auto">{{ include('eleve/_form.html.twig', { button_label: 'Update' }) }}
-    {{ include('eleve/_delete_form.html.twig') }}</section>
+    {{ include('eleve/_form.html.twig', { button_label: 'Update' }) }}
+    {{ include('eleve/_delete_form.html.twig') }}
+  </section>
 {% endblock %}
