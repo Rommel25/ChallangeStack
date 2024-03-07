@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints\Uuid;
 
 #[Route('/eleve')]
@@ -102,5 +103,15 @@ class EleveController extends AbstractController
         }
 
         return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/stats', name: 'app_eleve_stats', methods: ['GET','POST'])]
+    public function stats(Request $request, EntityManagerInterface $entityManager, EleveRepository $eleveRepository, Security $security, Eleve $eleve = null):Response
+    {
+        dd('ici');
+        return $this->render('eleve/edit.html.twig', [
+            'eleve' => $eleve,
+            'form' => $form->createView(),
+        ]);
     }
 }
