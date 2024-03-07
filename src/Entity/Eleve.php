@@ -36,8 +36,9 @@ class Eleve
 
     public function __toString(): string
     {
-        return (string) $this->user->getNom() . ' ' . $this->user->getPrenom();
+        return (string) $this->user;
     }
+
     public function __construct()
     {
         $this->classes = new ArrayCollection();

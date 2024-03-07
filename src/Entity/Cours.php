@@ -42,6 +42,11 @@ class Cours
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'cours')]
     private Collection $creneaux;
 
+    public function __toString(): string
+    {
+        return $this->titre;
+    }
+
     public function __construct()
     {
         $this->ressources = new ArrayCollection();

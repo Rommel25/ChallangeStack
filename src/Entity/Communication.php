@@ -25,6 +25,11 @@ class Communication
     #[ORM\ManyToOne(inversedBy: 'communications')]
     private ?Eleve $eleve = null;
 
+    public function __toString(): string
+    {
+        return 'communication entre ' . $this->formateur->getUser() . ' et ' . $this->eleve->getUser();
+    }
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
