@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Evaluation;
+use App\Entity\Note;
+use App\enum\TypeQuestionEnum;
 use App\Form\EvaluationType;
 use App\Form\QuestionnaireType;
 use App\Repository\EleveRepository;
@@ -100,10 +102,24 @@ class EvaluationController extends AbstractController
         $form->handleRequest($request);
 //        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
+//            dd($form->getData()["reponse2"]);
+            $note = new Note();
+            $pts = 0;
             foreach ($form->getData() as $reponse) {
                 $entityManager->persist($reponse);
+                if($reponse->getQuestion()->getType() === TypeQuestionEnum::CLOSE){
+                    if($reponse->getQuestion()->isReponseVf() === $reponse->isReponseVf()){
+                        $pts++;
+                    }
+                }
+
             };
+            $note->setEleve($eleve);
+            $note->setEvaluation($questionnaire);
+            $note->setNote($pts);
+            $eleve->addNote($note);
 //            $encryptDataService->hashService($lyceen);
+            $entityManager->persist($note, $eleve);
             $entityManager->flush();
             $session->getFlashBag()->add('success', 'Vos réponses ont bien été enregistrés');
             return $this->redirectToRoute('profil');
@@ -113,5 +129,4 @@ class EvaluationController extends AbstractController
 //            'sponsor' => $this->sponsorRepository->findLast()
         ]);
     }
-
 }
