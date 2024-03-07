@@ -1,167 +1,191 @@
-<html lang="en" class=""><head>
-    <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Get started with a free and open-source admin dashboard layout built with Tailwind CSS and Flowbite featuring charts, widgets, CRUD layouts, authentication pages, and more">
-<meta name="author" content="Themesberg">
-<meta name="generator" content="Hugo 0.58.2">
+<html lang="en" class="">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Get started with a free and open-source admin dashboard layout built with Tailwind CSS and Flowbite featuring charts, widgets, CRUD layouts, authentication pages, and more">
+		<meta name="author" content="Themesberg">
+		<meta name="generator" content="Hugo 0.58.2">
 
-<title>Tailwind CSS Admin Dashboard - Flowbite</title>
+		<title>Tailwind CSS Admin Dashboard - Flowbite</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
-<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/logo.png') }}">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/logo.png') }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/logo.png') }}">
-<link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
-<link rel="manifest" href="https://flowbite-admin-dashboard.vercel.app/site.webmanifest">
-<link rel="mask-icon" href="https://flowbite-admin-dashboard.vercel.app/safari-pinned-tab.svg" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="theme-color" content="#ffffff">
-
-
-<nav class="fixed z-30 w-full bg-white border-b border-gray-200">
-  <div class="px-3 py-4 lg:px-5 lg:pl-3">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center justify-start">
-        <button id="toggleSidebarMobile" aria-expanded="true" aria-controls="sidebar" class="p-2 text-gray-600 rounded cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100">
-          <svg id="toggleSidebarMobileHamburger" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-          <svg id="toggleSidebarMobileClose" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-        <a href="http://127.0.0.1:8000/" class="flex ml-2 md:mr-24">
-          <img src="{{ asset('img/logo.png') }}" class="h-8 mr-3" alt="AcademiaFlow Logo">
-          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">AcademiaFlow</span>
-        </a>
-      </div>
-      <div class="flex items-center">
-          {% if app.user %}
-          <div class="flex items-center ml-3">
-            <div>
-              <button type="button" class="flex text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
-                <span class="sr-only">Open user menu</span>
-                {% if app.user and app.user.image and app.user.image.data %}
-                  <img src="data:{{ app.user.image.getContentType() }};base64,{{ app.user.image.data }}" alt="Profile Image" class="w-8 h-8 rounded-full" />
-                {% else %}
-                  <svg class="w-8 h-8 rounded-full text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                  </svg>
-                {% endif %}
-              </button>
-            </div>
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-2" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(825px, 58px, 0px);" data-popper-placement="bottom">
-              <div class="px-4 py-3" role="none">
-                <p class="text-sm text-gray-900" role="none">
-                {{ app.user.nom }} {{ app.user.prenom }}
-                </p>
-                <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                {{ app.user.email }}
-                </p>
-              </div>
-              <ul class="py-1" role="none">
-                <li>
-                  <a href="{{ path('app_atelier') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Tableau de bord</a>
-                </li>
-                <li>
-                  <a href="{{ path('profil') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</a>
-                </li>
-                <li>
-                  <a href="{{ path('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Déconnexion</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          {% endif %}
-        </div>
-    </div>
-  </div>
-</nav>
-<div class="flex pt-16 overflow-hidden bg-gray-50">
-
-  <aside id="sidebar" class="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 lg:flex transition-width hidden" aria-label="Sidebar">
-  <div class="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-gray-200">
-    <div class="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
-      <div class="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200">
-        <ul class="pb-2 space-y-2">
-        {% if app.user %}
-          <li>
-            <a href="{{ path('app_atelier') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
-                <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62Zm130.34,26.9c-.09-.18-.18-.37-.29-.55s-.2-.33-.31-.49A104.05,104.05,0,0,0,128,24a8,8,0,0,0-8,8v91.83l-78.81,45.9a8,8,0,0,0-2.87,11A104,104,0,0,0,232,128,103.34,103.34,0,0,0,218.34,76.52ZM136,40.36A88.05,88.05,0,0,1,199.89,77.3L136,114.51ZM128,216a88.45,88.45,0,0,1-71.49-36.68l75.4-43.91.22-.14L207.9,91.14A88,88,0,0,1,128,216Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Tableau de bord</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ path("app_cours_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
-                <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M224,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h64a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64ZM160,88h40a8,8,0,0,1,0,16H160a8,8,0,0,1,0-16Zm48,40a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,128Zm0,32a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,160Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Cours</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ path("app_cours_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
-                <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Classes</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ path("app_eleve_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
-                <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M226.53,56.41l-96-32a8,8,0,0,0-5.06,0l-96,32A8,8,0,0,0,24,64v80a8,8,0,0,0,16,0V75.1L73.59,86.29a64,64,0,0,0,20.65,88.05c-18,7.06-33.56,19.83-44.94,37.29a8,8,0,1,0,13.4,8.74C77.77,197.25,101.57,184,128,184s50.23,13.25,65.3,36.37a8,8,0,0,0,13.4-8.74c-11.38-17.46-27-30.23-44.94-37.29a64,64,0,0,0,20.65-88l44.12-14.7a8,8,0,0,0,0-15.18ZM176,120A48,48,0,1,1,89.35,91.55l36.12,12a8,8,0,0,0,5.06,0l36.12-12A47.89,47.89,0,0,1,176,120ZM128,87.57,57.3,64,128,40.43,198.7,64Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Élèves</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ path("create_examen") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700 ">
-                <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V216a8,8,0,0,0,11.58,7.16L64,208.94l28.42,14.22a8,8,0,0,0,7.16,0L128,208.94l28.42,14.22a8,8,0,0,0,7.16,0L192,208.94l28.42,14.22A8,8,0,0,0,232,216V56A16,16,0,0,0,216,40Zm0,163.06-20.42-10.22a8,8,0,0,0-7.16,0L160,207.06l-28.42-14.22a8,8,0,0,0-7.16,0L96,207.06,67.58,192.84a8,8,0,0,0-7.16,0L40,203.06V56H216ZM60.42,167.16a8,8,0,0,0,10.74-3.58L76.94,152h38.12l5.78,11.58a8,8,0,1,0,14.32-7.16l-32-64a8,8,0,0,0-14.32,0l-32,64A8,8,0,0,0,60.42,167.16ZM96,113.89,107.06,136H84.94ZM136,128a8,8,0,0,1,8-8h16V104a8,8,0,0,1,16,0v16h16a8,8,0,0,1,0,16H176v16a8,8,0,0,1-16,0V136H144A8,8,0,0,1,136,128Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Examens</span>
-            </a>
-          </li>
-            <li>
-            <a href="{{ path("app_communication_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700 ">
-                <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M216,80H184V48a16,16,0,0,0-16-16H40A16,16,0,0,0,24,48V176a8,8,0,0,0,13,6.22L72,154V184a16,16,0,0,0,16,16h93.59L219,230.22a8,8,0,0,0,5,1.78,8,8,0,0,0,8-8V96A16,16,0,0,0,216,80ZM66.55,137.78,40,159.25V48H168v88H71.58A8,8,0,0,0,66.55,137.78ZM216,207.25l-26.55-21.47a8,8,0,0,0-5-1.78H88V152h80a16,16,0,0,0,16-16V96h32Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Communications</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ path('profil') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
-              <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Profile</span>
-            </a>
-          </li>
-          {% endif %}
-          {% if not app.user %} 
-          <li>
-            <a href="{{ path('app_login') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
-              <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M141.66,133.66l-40,40a8,8,0,0,1-11.32-11.32L116.69,136H24a8,8,0,0,1,0-16h92.69L90.34,93.66a8,8,0,0,1,11.32-11.32l40,40A8,8,0,0,1,141.66,133.66ZM192,32H136a8,8,0,0,0,0,16h56V208H136a8,8,0,0,0,0,16h56a16,16,0,0,0,16-16V48A16,16,0,0,0,192,32Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Connexion</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ path('app_register') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
-              <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M112,216a8,8,0,0,1-8,8H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32h56a8,8,0,0,1,0,16H48V208h56A8,8,0,0,1,112,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L196.69,120H104a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,221.66,122.34Z"></path></svg>
-                <span class="ml-3" sidebar-toggle-item="">Inscription</span>
-            </a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </div>
-</aside>
-{# {% if app.user %}  #}
-<div id="main-content" class="relative w-full h-full overflow-y-auto lg:pl-72 !bg-white pt-10 pr-4">
-    <main>
-      {% block body %}{% endblock %}
-    </main>
-</div>
-{# {% endif %} #}
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/logo.png') }}">
+		<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/logo.png') }}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/logo.png') }}">
+		<link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+		<link rel="manifest" href="https://flowbite-admin-dashboard.vercel.app/site.webmanifest">
+		<link rel="mask-icon" href="https://flowbite-admin-dashboard.vercel.app/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="theme-color" content="#ffffff">
 
 
-  {% block javascripts %}
-    <script src=" https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js "></script>
-    <script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
-    <script src="https://flowbite-admin-dashboard.vercel.app//app.bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  {% endblock %}
-  
-</body>
+		<nav class="fixed z-30 w-full bg-white border-b border-gray-200">
+			<div class="px-3 py-4 lg:px-5 lg:pl-3">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center justify-start">
+						<button id="toggleSidebarMobile" aria-expanded="true" aria-controls="sidebar" class="p-2 text-gray-600 rounded cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100">
+							<svg id="toggleSidebarMobileHamburger" class="w-6 h-6" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+							</svg>
+							<svg id="toggleSidebarMobileClose" class="w-6 h-6 hidden" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+							</svg>
+						</button>
+						<a href="http://127.0.0.1:8000/" class="flex ml-2 md:mr-24">
+							<img src="{{ asset('img/logo.png') }}" class="h-8 mr-3" alt="AcademiaFlow Logo">
+							<span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">AcademiaFlow</span>
+						</a>
+					</div>
+					<div class="flex items-center">
+						{% if app.user %}
+							<div class="flex items-center ml-3">
+								<div>
+									<button type="button" class="flex text-sm bg-gray-200 rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
+										<span class="sr-only">Open user menu</span>
+										{% if app.user and app.user.image and app.user.image.data %}
+											<img src="data:{{ app.user.image.getContentType() }};base64,{{ app.user.image.data }}" alt="Profile Image" class="w-8 h-8 rounded-full"/>
+										{% else %}
+											<svg class="w-8 h-8 rounded-full text-gray-400 -left-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+											</svg>
+										{% endif %}
+									</button>
+								</div>
+								<div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-2" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(825px, 58px, 0px);" data-popper-placement="bottom">
+									<div class="px-4 py-3" role="none">
+										<p class="text-sm text-gray-900" role="none">
+											{{ app.user.nom }}
+											{{ app.user.prenom }}
+										</p>
+										<p class="text-sm font-medium text-gray-900 truncate" role="none">
+											{{ app.user.email }}
+										</p>
+									</div>
+									<ul class="py-1" role="none">
+										<li>
+											<a href="{{ path('app_atelier') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Tableau de bord</a>
+										</li>
+										<li>
+											<a href="{{ path('profil') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</a>
+										</li>
+										<li>
+											<a href="{{ path('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Déconnexion</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</nav>
+		<div class="flex pt-16 overflow-hidden bg-gray-50">
+
+			<aside id="sidebar" class="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 lg:flex transition-width hidden" aria-label="Sidebar">
+				<div class="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-gray-200">
+					<div class="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
+						<div class="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200">
+							<ul class="pb-2 space-y-2">
+								{% if app.user %}
+									<li>
+										<a href="{{ path('app_atelier') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M100,116.43a8,8,0,0,0,4-6.93v-72A8,8,0,0,0,93.34,30,104.06,104.06,0,0,0,25.73,147a8,8,0,0,0,4.52,5.81,7.86,7.86,0,0,0,3.35.74,8,8,0,0,0,4-1.07ZM88,49.62v55.26L40.12,132.51C40,131,40,129.48,40,128A88.12,88.12,0,0,1,88,49.62Zm130.34,26.9c-.09-.18-.18-.37-.29-.55s-.2-.33-.31-.49A104.05,104.05,0,0,0,128,24a8,8,0,0,0-8,8v91.83l-78.81,45.9a8,8,0,0,0-2.87,11A104,104,0,0,0,232,128,103.34,103.34,0,0,0,218.34,76.52ZM136,40.36A88.05,88.05,0,0,1,199.89,77.3L136,114.51ZM128,216a88.45,88.45,0,0,1-71.49-36.68l75.4-43.91.22-.14L207.9,91.14A88,88,0,0,1,128,216Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Tableau de bord</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{ path("app_cours_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M224,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h64a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64ZM160,88h40a8,8,0,0,1,0,16H160a8,8,0,0,1,0-16Zm48,40a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,128Zm0,32a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,160Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Cours</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{ path("app_classe_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Classes</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{ path("app_eleve_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M226.53,56.41l-96-32a8,8,0,0,0-5.06,0l-96,32A8,8,0,0,0,24,64v80a8,8,0,0,0,16,0V75.1L73.59,86.29a64,64,0,0,0,20.65,88.05c-18,7.06-33.56,19.83-44.94,37.29a8,8,0,1,0,13.4,8.74C77.77,197.25,101.57,184,128,184s50.23,13.25,65.3,36.37a8,8,0,0,0,13.4-8.74c-11.38-17.46-27-30.23-44.94-37.29a64,64,0,0,0,20.65-88l44.12-14.7a8,8,0,0,0,0-15.18ZM176,120A48,48,0,1,1,89.35,91.55l36.12,12a8,8,0,0,0,5.06,0l36.12-12A47.89,47.89,0,0,1,176,120ZM128,87.57,57.3,64,128,40.43,198.7,64Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Élèves</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{ path("create_examen") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700 ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M216,40H40A16,16,0,0,0,24,56V216a8,8,0,0,0,11.58,7.16L64,208.94l28.42,14.22a8,8,0,0,0,7.16,0L128,208.94l28.42,14.22a8,8,0,0,0,7.16,0L192,208.94l28.42,14.22A8,8,0,0,0,232,216V56A16,16,0,0,0,216,40Zm0,163.06-20.42-10.22a8,8,0,0,0-7.16,0L160,207.06l-28.42-14.22a8,8,0,0,0-7.16,0L96,207.06,67.58,192.84a8,8,0,0,0-7.16,0L40,203.06V56H216ZM60.42,167.16a8,8,0,0,0,10.74-3.58L76.94,152h38.12l5.78,11.58a8,8,0,1,0,14.32-7.16l-32-64a8,8,0,0,0-14.32,0l-32,64A8,8,0,0,0,60.42,167.16ZM96,113.89,107.06,136H84.94ZM136,128a8,8,0,0,1,8-8h16V104a8,8,0,0,1,16,0v16h16a8,8,0,0,1,0,16H176v16a8,8,0,0,1-16,0V136H144A8,8,0,0,1,136,128Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Examens</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{ path("app_communication_index") }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700 ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M216,80H184V48a16,16,0,0,0-16-16H40A16,16,0,0,0,24,48V176a8,8,0,0,0,13,6.22L72,154V184a16,16,0,0,0,16,16h93.59L219,230.22a8,8,0,0,0,5,1.78,8,8,0,0,0,8-8V96A16,16,0,0,0,216,80ZM66.55,137.78,40,159.25V48H168v88H71.58A8,8,0,0,0,66.55,137.78ZM216,207.25l-26.55-21.47a8,8,0,0,0-5-1.78H88V152h80a16,16,0,0,0,16-16V96h32Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Communications</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{ path('profil') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Profile</span>
+										</a>
+									</li>
+								{% endif %}
+								{% if not app.user %}
+									<li>
+										<a href="{{ path('app_login') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M141.66,133.66l-40,40a8,8,0,0,1-11.32-11.32L116.69,136H24a8,8,0,0,1,0-16h92.69L90.34,93.66a8,8,0,0,1,11.32-11.32l40,40A8,8,0,0,1,141.66,133.66ZM192,32H136a8,8,0,0,0,0,16h56V208H136a8,8,0,0,0,0,16h56a16,16,0,0,0,16-16V48A16,16,0,0,0,192,32Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Connexion</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{ path('app_register') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">
+											<svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 256 256">
+												<path d="M112,216a8,8,0,0,1-8,8H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32h56a8,8,0,0,1,0,16H48V208h56A8,8,0,0,1,112,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L196.69,120H104a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,221.66,122.34Z"></path>
+											</svg>
+											<span class="ml-3" sidebar-toggle-item="">Inscription</span>
+										</a>
+									</li>
+								{% endif %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</aside>
+			{# {% if app.user %}  #}
+			<div id="main-content" class="relative w-full h-full overflow-y-auto lg:pl-72 !bg-white pt-10 pr-4">
+				<main>
+					{% block body %}{% endblock %}
+				</main>
+			</div>
+			{# {% endif %} #}
+
+
+			{% block javascripts %}
+				<script src=" https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js "></script>
+				<script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
+				<script src="https://flowbite-admin-dashboard.vercel.app//app.bundle.js"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			{% endblock %}
+		</body>
+	</head>
 </html>

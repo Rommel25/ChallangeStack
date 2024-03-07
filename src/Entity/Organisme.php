@@ -30,6 +30,11 @@ class Organisme
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Image $Image = null;
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function __construct()
     {
         $this->formations = new ArrayCollection();

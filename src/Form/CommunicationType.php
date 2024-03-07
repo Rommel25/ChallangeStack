@@ -17,11 +17,9 @@ class CommunicationType extends AbstractType
         $builder
             ->add('formateur', EntityType::class, [
                 'class' => Formateur::class,
-'choice_label' => 'id',
             ])
             ->add('eleve', EntityType::class, [
                 'class' => Eleve::class,
-'choice_label' => 'id',
             ])
         ;
     }

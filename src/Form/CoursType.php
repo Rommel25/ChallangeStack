@@ -21,7 +21,6 @@ class CoursType extends AbstractType
             ->add('difficulte')
             ->add('formateur', EntityType::class, [
                 'class' => Formateur::class,
-'choice_label' => 'id',
             ])
         ;
     }

@@ -1,18 +1,29 @@
 {{ form_start(form) }}
 
 {# Parcourir chaque champ du formulaire #}
-{% for field in form %}
-    {% if field.vars.name != '_token' %}
-        <div class="mb-5">
-            {# Rendu personnalisé du label du champ #}
-            {{ form_label(field, null, { label_attr: { class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900', for: 'base-input' } }) }}
+{% for field in form.user %}
+  {% if field.vars.name != '_token' and field.vars.name != 'submit' %}
+    <div class="mb-5">
+      {# Rendu personnalisé du label du champ #}
+      {{ form_label(field, null, { label_attr: { class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900', for: 'base-input' } }) }}
 
-            {# Rendu personnalisé du widget (input) du champ #}
-            {{ form_widget(field, { attr: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', id: 'base-input' } }) }}
-        </div>
-    {% endif %}
+      {# Rendu personnalisé du widget (input) du champ #}
+      {{ form_widget(field, { attr: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', id: 'base-input' } }) }}
+    </div>
+  {% endif %}
+{% endfor %}
+
+{% for classe in form %}
+  {% if classe.vars.name != '_token' and classe.vars.name != 'submit' and classe.vars.name != 'user' %}
+    <div class="mb-5">
+      {# Rendu personnalisé du label du champ #}
+      {{ form_label(classe, null, { label_attr: { class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900', for: 'base-input' } }) }}
+
+      {# Rendu personnalisé du widget (input) du champ #}
+      {{ form_widget(classe, { attr: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', id: 'base-input' } }) }}
+    </div>
+  {% endif %}
 {% endfor %}
 
 <button class="btn text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">{{ button_label|default('Save') }}</button>
-
-{{ form_end(form) }}
+{{ form_end(form, { render_rest: false }) }}

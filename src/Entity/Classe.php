@@ -29,7 +29,7 @@ class Classe
 
     public function __toString(): string
     {
-        return $this->section . $this->id;
+        return  $this->formation->getLibelle() . ' ' . $this->section;
     }
 
 

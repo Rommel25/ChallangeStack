@@ -6,6 +6,7 @@ use App\Entity\Classe;
 use App\Entity\Eleve;
 use App\Form\EleveType;
 use App\Repository\EleveRepository;
+use App\Repository\ClasseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +27,17 @@ class EleveController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_eleve_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    #[Route('/new/{idClasse}', name: 'app_eleve_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, $idClasse, ClasseRepository $classeRepository): Response
     {
         $eleve = new Eleve();
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
+
+        $classe = $classeRepository->find($idClasse);
+        $eleve->addClass($classe);
+
+
 //        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
             $eleve->getUser()->setPassword('');
@@ -50,7 +56,7 @@ class EleveController extends AbstractController
 
             $mailer->send($email);
 
-            return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_classe_show', ['id' => $idClasse], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('eleve/new.html.twig', [
