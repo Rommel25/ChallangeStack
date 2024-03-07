@@ -27,18 +27,19 @@ class EleveController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{idClasse}', name: 'app_eleve_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, $idClasse, ClasseRepository $classeRepository): Response
+    #[Route('/new/{idClasse?}', name: 'app_eleve_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, $idClasse = null, ClasseRepository $classeRepository): Response
     {
         $eleve = new Eleve();
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
 
-        $classe = $classeRepository->find($idClasse);
-        $eleve->addClass($classe);
+        if ($idClasse) {
+            $classe = $classeRepository->find($idClasse);
+            $eleve->addClass($classe);
+        }
 
-
-//        dd($eleve);
+        //        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
             $eleve->getUser()->setPassword('');
             $eleve->getUser()->setPlainPassword('');
@@ -52,7 +53,7 @@ class EleveController extends AbstractController
                 ->to($eleve->getUser()->getEmail())
                 ->subject('Va niquer ta mere')
                 ->text('Sending emails is fun again!')
-                ->html('<p>Set password here http://challenge.local/premiereconnexion/'.$uniqueId.'</p>');
+                ->html('<p>Set password here http://challenge.local/premiereconnexion/' . $uniqueId . '</p>');
 
             $mailer->send($email);
 
@@ -78,7 +79,7 @@ class EleveController extends AbstractController
     {
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
-//        dd($eleve->getClasses());
+        //        dd($eleve->getClasses());
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($eleve);
             $entityManager->flush();
@@ -95,7 +96,7 @@ class EleveController extends AbstractController
     #[Route('/{id}', name: 'app_eleve_delete', methods: ['POST'])]
     public function delete(Request $request, Eleve $eleve, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$eleve->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $eleve->getId(), $request->request->get('_token'))) {
             $entityManager->remove($eleve);
             $entityManager->flush();
         }

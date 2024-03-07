@@ -1,25 +1,30 @@
-{% block title %}1ere connexion{% endblock %}
+{% extends 'base.html.twig' %}
+
+{% block title %}1ère connexion{% endblock %}
 
 {% block body %}
-{#    {% if user %}#}
-{#    <h1>Salut {{ user.prenom }}</h1>#}
-    <div id="login_page" class="container d-flex align-items-center justify-content-center">
-        <form method="post">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h1 class="h3 font-weight-normal">Please sign in</h1>
-
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-
-                    No account yet ? <a href="{{ path('app_atelier') }}">Sign up</a>
-                </div>
+<div class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="w-full max-w-md">
+        <form method="post" class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+            <div class="text-center pb-4">
+                <h1 class="text-gray-800 text-3xl">Première connexion</h1>
             </div>
-
+            
+            {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+            {% for field in form %}
+                {% if field.vars.name != '_token' %}
+                    <div>
+                        {{ form_label(field, null, { 'label_attr': { 'class': 'block text-gray-700 text-sm font-bold mb-2' } }) }}
+                        {{ form_widget(field, { 'attr': { 'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' } }) }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+            {# <div class="flex items-center justify-between pt-4">
+                <button type="submit" class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700">Connexion</button>
+            </div> #}
+             {{ form_end(form) }}
         </form>
     </div>
-{#    {% else %}#}
-{#    <h2>Deja defini un mdp</h2>#}
-{#    {% endif %}#}
+</div>
 {% endblock %}
