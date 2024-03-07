@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Evaluation;
 use App\Form\EvaluationType;
+use App\Form\QuestionnaireType;
 use App\Repository\EleveRepository;
 use App\Repository\EvaluationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -88,26 +89,28 @@ class EvaluationController extends AbstractController
     }
 
     #[Route('/questionnaire/{id}', name: 'app_questionnaire', methods: ['GET', 'POST'])]
-    public function questionnaire($id, Request $request, AuthenticationUtils $authenticationUtils, Security $security, EvaluationRepository $evaluationRepository, SessionInterface $session, EleveRepository $eleveRepository): Response
+    public function questionnaire($id, Request $request, AuthenticationUtils $authenticationUtils, Security $security, EvaluationRepository $evaluationRepository, SessionInterface $session, EleveRepository $eleveRepository, EntityManagerInterface $entityManager): Response
     {
         $questionnaire = $evaluationRepository->findOneBy(['cours'=>$id]);
+//        dd($questionnaire);
         $form = $this->createForm(QuestionnaireType::class, null, [
             'questionnaire' => $questionnaire
         ]);
-        $lyceen = $lyceenRepository->findOneBy(['user'=>$this->getUser()]);
+        $eleve = $eleveRepository->findOneBy(['user'=>$this->getUser()]);
         $form->handleRequest($request);
+//        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($form->getData() as $reponse) {
-                $this->entityManager->persist($reponse);
+                $entityManager->persist($reponse);
             };
-            $encryptDataService->hashService($lyceen);
-            $this->entityManager->flush();
+//            $encryptDataService->hashService($lyceen);
+            $entityManager->flush();
             $session->getFlashBag()->add('success', 'Vos réponses ont bien été enregistrés');
-            return $this->redirectToRoute('app_profile');
+            return $this->redirectToRoute('app_profil');
         }
         return $this->render('lyceen/questionnaire.html.twig', [
             'form' => $form,
-            'sponsor' => $this->sponsorRepository->findLast()
+//            'sponsor' => $this->sponsorRepository->findLast()
         ]);
     }
 
