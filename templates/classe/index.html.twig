@@ -34,13 +34,15 @@
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">Section</th>
+          <th scope="col" class="px-6 py-3">Formation</th>
           <th scope="col" class="px-6 py-3">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for classe in classes %}
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td class="px-6 py-4">{{ classe }}</td>
+            <td class="px-6 py-4">{{ classe.section }}</td>
+            <td class="px-6 py-4">{{ classe.formation.libelle }}</td>
             <td class="px-6 py-4">
               <a href="{{ path('app_classe_show', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
               <a href="{{ path('app_classe_edit', { id: classe.id }) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
