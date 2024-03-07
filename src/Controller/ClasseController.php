@@ -139,6 +139,7 @@ class ClasseController extends AbstractController
         return $this->render('classe/edit.html.twig', [
             'classe' => $classe,
             'form' => $form,
+            'idF' => false,
             'formCsv' => $formCsv->createView(),
         ]);
     }
