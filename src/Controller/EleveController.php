@@ -7,6 +7,7 @@ use App\Entity\Eleve;
 use App\Form\EleveType;
 use App\Repository\EleveRepository;
 use App\Repository\ClasseRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,20 @@ class EleveController extends AbstractController
     {
         return $this->render('eleve/index.html.twig', [
             'eleves' => $eleveRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/stats', name: 'app_eleve_stats', methods: ['GET','POST'])]
+    public function stats(Request $request, EntityManagerInterface $entityManager,NoteRepository $noteRepository, EleveRepository $eleveRepository, Security $security): Response
+    {
+//        dd('ici');
+        $note = [];
+        $eleve = $eleveRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+//        dd($eleve->getId());
+        $notes = $noteRepository->findBy(['eleve' => $eleve->getId()]);
+//        dd($eleve->getNotes(), $notes);
+        return $this->render('eleve/stats.html.twig', [
+            'notes' => $notes
         ]);
     }
 
@@ -105,13 +120,5 @@ class EleveController extends AbstractController
         return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/stats', name: 'app_eleve_stats', methods: ['GET','POST'])]
-    public function stats(Request $request, EntityManagerInterface $entityManager, EleveRepository $eleveRepository, Security $security, Eleve $eleve = null):Response
-    {
-        dd('ici');
-        return $this->render('eleve/edit.html.twig', [
-            'eleve' => $eleve,
-            'form' => $form->createView(),
-        ]);
-    }
+
 }

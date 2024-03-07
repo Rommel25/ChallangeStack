@@ -23,7 +23,9 @@ class CoursController extends AbstractController
    public function index(CoursRepository $coursRepository,FormateurRepository $formateurRepository ,EntityManagerInterface $entityManager, Security $security): Response
    {
        $formateur = $formateurRepository->findOneBy(['user'=>$security->getUser()->getId()]);
+    if ($formateur){
 
+    
        $difficultiesData = $entityManager
            ->createQueryBuilder()
            ->select('c.difficulte', 'c.titre','c.description','c.objectif','c.duree','c.id')
@@ -32,7 +34,14 @@ class CoursController extends AbstractController
            ->groupBy('c.difficulte, c.titre','c.description','c.objectif','c.duree','c.id')
            ->getQuery()
            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
+        }else{
+            $difficultiesData = $entityManager
+            ->createQueryBuilder()
+            ->select('c.difficulte', 'c.titre','c.description','c.objectif','c.duree','c.id')
+            ->from('App\Entity\Cours', 'c')
+            ->groupBy('c.difficulte, c.titre','c.description','c.objectif','c.duree','c.id')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);}
        // Organiser les données par difficulté et construire un tableau "data" pour chaque difficulté
        $groupedData = [];
        foreach ($difficultiesData as $row) {
