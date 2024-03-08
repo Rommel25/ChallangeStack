@@ -15,6 +15,8 @@ use App\Repository\FormateurRepository;
 use App\Repository\CreneauRepository;
 use App\Repository\ClasseRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/cours')]
 class CoursController extends AbstractController
@@ -68,13 +70,38 @@ class CoursController extends AbstractController
    }
 
     #[Route('/new', name: 'app_cours_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $cour = new Cours();
         $form = $this->createForm(CoursType::class, $cour);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $ressourceFile */
+            $ressourceFile = $form->get('ressource')->getData();
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($ressourceFile) {
+                $originalFilename = pathinfo($ressourceFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$ressourceFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $ressourceFile->move(
+                        $this->getParameter('cours_resources_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $cour->setRessource($newFilename);
+            }
             $entityManager->persist($cour);
             $entityManager->flush();
 
@@ -103,12 +130,37 @@ class CoursController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_cours_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Cours $cour, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Cours $cour, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(CoursType::class, $cour);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $ressourceFile */
+            $ressourceFile = $form->get('ressource')->getData();
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($ressourceFile) {
+                $originalFilename = pathinfo($ressourceFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$ressourceFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $ressourceFile->move(
+                        $this->getParameter('cours_resources_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $cour->setRessource($newFilename);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
@@ -129,5 +181,24 @@ class CoursController extends AbstractController
         }
 
         return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/telecharger_pdf/{id}', name: 'telecharger_pdf', methods: ['GET'])]
+    public function telechargerPdf(Request $request, Cours $cour): Response
+    {
+
+        if (!$cour) {
+            throw $this->createNotFoundException('Entité non trouvée');
+        }
+
+        $pdfPath = $this->getParameter('cours_resources_directory') . '/' . $cour->getRessource();
+
+        // Vérifiez si le fichier PDF existe
+        if (!file_exists($pdfPath)) {
+            throw $this->createNotFoundException('Fichier PDF non trouvé ' . $pdfPath);
+        }
+
+        // Renvoyer le fichier PDF comme réponse HTTP
+        return $this->file($pdfPath);
     }
 }

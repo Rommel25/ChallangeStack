@@ -42,6 +42,9 @@ class Cours
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'cours')]
     private Collection $creneaux;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ressource = null;
+
     public function __toString(): string
     {
         return $this->titre;
@@ -217,6 +220,18 @@ class Cours
                 $creneau->setCours(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRessource(): ?string
+    {
+        return $this->ressource;
+    }
+
+    public function setRessource(?string $ressource): static
+    {
+        $this->ressource = $ressource;
 
         return $this;
     }
