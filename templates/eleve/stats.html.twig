@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-{% for note in notes %}
-{{ note.note }} <br>
-{% endfor %}
+    {% for note in notes %}
+        Id de l'évaluation : {{ note.evaluation.id }} <br>
+        Note : {{ note.note }} <br> <br>
+    {% endfor %}
 {% endblock %}
