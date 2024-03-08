@@ -27,6 +27,9 @@ class Classe
     #[ORM\ManyToOne(inversedBy: 'classes')]
     private ?Formation $formation = null;
 
+    #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'classes')]
+    private Collection $cours;
+
     public function __toString(): string
     {
         return  $this->formation->getLibelle() . ' ' . $this->section;
@@ -37,6 +40,7 @@ class Classe
     {
         $this->eleves = new ArrayCollection();
         $this->creneaux = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,6 +122,33 @@ class Classe
     public function setFormation(?Formation $formation): static
     {
         $this->formation = $formation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): static
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours->add($cour);
+            $cour->addClass($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): static
+    {
+        if ($this->cours->removeElement($cour)) {
+            $cour->removeClass($this);
+        }
 
         return $this;
     }

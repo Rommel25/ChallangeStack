@@ -37,14 +37,13 @@ class ReponseType extends AbstractType
             $builder->add('reponse_vf', ChoiceType::class, [
                 'label' => $question->getIntitule(),
                 'required' => true,
-                'choices' => ['Oui' => 'Oui', 'Non' => 'Non'],
+                'choices' => ['Oui' => 1, 'Non' => 0],
                 'expanded' => true
             ]);
         } else {
             $builder->add('reponse_libre', TextType::class, [
                 'label' => $question->getIntitule(),
                 'required' => true,
-
             ]);
         }
     }

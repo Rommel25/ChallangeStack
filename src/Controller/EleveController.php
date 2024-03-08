@@ -6,6 +6,7 @@ use App\Entity\Classe;
 use App\Entity\Eleve;
 use App\Form\EleveType;
 use App\Repository\EleveRepository;
+use App\Repository\UserRepository;
 use App\Repository\ClasseRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +56,6 @@ class EleveController extends AbstractController
             $eleve->addClass($classe);
         }
 
-        //        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
             $eleve->getUser()->setPassword('');
             $eleve->getUser()->setPlainPassword('');
@@ -83,10 +83,14 @@ class EleveController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_eleve_show', methods: ['GET'])]
-    public function show(Eleve $eleve): Response
+    public function show(Eleve $eleve, UserRepository $userRepository): Response
     {
+
+        $infoEleve = $userRepository->findOneBy(['id'=>$eleve->getUser()->getId()]);
+
         return $this->render('eleve/show.html.twig', [
             'eleve' => $eleve,
+            'infoEleve' => $infoEleve
         ]);
     }
 
