@@ -55,8 +55,9 @@ class EleveController extends AbstractController
             $eleve->addClass($classe);
         }
 
-        //        dd($eleve);
+//                dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
+//            dd($form->getData());
             $eleve->getUser()->setPassword('');
             $eleve->getUser()->setPlainPassword('');
             $uniqueId = uniqid();
@@ -67,13 +68,13 @@ class EleveController extends AbstractController
             $email = (new Email())
                 ->from('support@academiaflow.com')
                 ->to($eleve->getUser()->getEmail())
-                ->subject('Va niquer ta mere')
-                ->text('Sending emails is fun again!')
+                ->subject('Inscription')
+                ->text('Votre invitation pour vous inscrire à la plateforme AcademiaFlow')
                 ->html('<p>Set password here http://challenge.local/premiereconnexion/' . $uniqueId . '</p>');
 
             $mailer->send($email);
 
-            return $this->redirectToRoute('app_classe_show', ['id' => $idClasse], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_eleve_index');
         }
 
         return $this->render('eleve/new.html.twig', [
