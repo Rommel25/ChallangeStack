@@ -1,4 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+{# Parcourir chaque champ du formulaire #}
+{% for field in form %}
+  {% if field.vars.name != '_token' %}
+    <div class="mb-5">
+      {# Rendu personnalisé du label du champ #}
+      {{ form_label(field, null, { label_attr: { class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900', for: field.vars.id } }) }}
+
+      {# Rendu personnalisé du widget (input) du champ #}
+      {{ form_widget(field, { attr: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', id: field.vars.id } }) }}
+    </div>
+  {% endif %}
+{% endfor %}
+
+<button class="btn text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

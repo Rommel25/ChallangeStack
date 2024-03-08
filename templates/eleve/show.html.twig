@@ -35,12 +35,23 @@
 	</div>
 	<div class="max-w-4xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto my-8">
 		<h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Détails de l'Élève</h1>
-
 		<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-6">
 			<tbody>
 				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">ID</th>
 					<td class="px-6 py-4">{{ eleve.id }}</td>
+				</tr>
+				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+					<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Prénom</th>
+					<td class="px-6 py-4">{{ infoEleve.prenom }}</td>
+				</tr>
+				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+					<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Nom</th>
+					<td class="px-6 py-4">{{ infoEleve.nom }}</td>
+				</tr>
+				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+					<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Email</th>
+					<td class="px-6 py-4">{{ infoEleve.email }}</td>
 				</tr>
 			</tbody>
 		</table>

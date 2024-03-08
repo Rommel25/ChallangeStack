@@ -134,7 +134,7 @@ class CoursController extends AbstractController
 //            $responses[] = $classeRepository->findBy(['id'=>$classe->getClasse()->getId()]);
 //        };
         $classes = $cour->getClasses();
-
+//        dd($cour->getEvaluations());
         return $this->render('cours/show.html.twig', [
             'cour' => $cour,
             'classesByCours' => $classes

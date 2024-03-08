@@ -6,6 +6,7 @@ use App\Entity\Classe;
 use App\Entity\Eleve;
 use App\Form\EleveType;
 use App\Repository\EleveRepository;
+use App\Repository\UserRepository;
 use App\Repository\ClasseRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,13 +68,13 @@ class EleveController extends AbstractController
             $email = (new Email())
                 ->from('support@academiaflow.com')
                 ->to($eleve->getUser()->getEmail())
-                ->subject('Va niquer ta mere')
-                ->text('Sending emails is fun again!')
+                ->subject('Inscription')
+                ->text('Votre invitation pour vous inscrire à la plateforme AcademiaFlow')
                 ->html('<p>Set password here http://challenge.local/premiereconnexion/' . $uniqueId . '</p>');
 
             $mailer->send($email);
 
-            return $this->redirectToRoute('app_classe_show', ['id' => $idClasse], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_eleve_index');
         }
 
         return $this->render('eleve/new.html.twig', [
@@ -83,10 +84,14 @@ class EleveController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_eleve_show', methods: ['GET'])]
-    public function show(Eleve $eleve): Response
+    public function show(Eleve $eleve, UserRepository $userRepository): Response
     {
+
+        $infoEleve = $userRepository->findOneBy(['id'=>$eleve->getUser()->getId()]);
+
         return $this->render('eleve/show.html.twig', [
             'eleve' => $eleve,
+            'infoEleve' => $infoEleve
         ]);
     }
 
