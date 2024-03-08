@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Evaluation;
+use App\Entity\Note;
+use App\enum\TypeQuestionEnum;
 use App\Form\EvaluationType;
 use App\Form\QuestionnaireType;
 use App\Repository\EleveRepository;
@@ -33,9 +35,8 @@ class EvaluationController extends AbstractController
         $evaluation = new Evaluation();
         $form = $this->createForm(EvaluationType::class, $evaluation);
         $form->handleRequest($request);
-//        dd($form->getData()->getQuestions());
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->getData()->getQuestions() as $question){
+            foreach ($form->getData()->getQuestions() as $question) {
                 $evaluation->addQuestion($question);
                 $question->setEvaluation($evaluation);
             }
@@ -80,7 +81,7 @@ class EvaluationController extends AbstractController
     #[Route('/{id}', name: 'app_evaluation_delete', methods: ['POST'])]
     public function delete(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$evaluation->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $evaluation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($evaluation);
             $entityManager->flush();
         }
@@ -91,27 +92,37 @@ class EvaluationController extends AbstractController
     #[Route('/questionnaire/{id}', name: 'app_questionnaire', methods: ['GET', 'POST'])]
     public function questionnaire($id, Request $request, AuthenticationUtils $authenticationUtils, Security $security, EvaluationRepository $evaluationRepository, SessionInterface $session, EleveRepository $eleveRepository, EntityManagerInterface $entityManager): Response
     {
-        $questionnaire = $evaluationRepository->findOneBy(['cours'=>$id]);
-//        dd($questionnaire);
+        $questionnaire = $evaluationRepository->findOneBy(['cours' => $id]);
         $form = $this->createForm(QuestionnaireType::class, null, [
             'questionnaire' => $questionnaire
         ]);
-        $eleve = $eleveRepository->findOneBy(['user'=>$this->getUser()]);
+        $eleve = $eleveRepository->findOneBy(['user' => $this->getUser()]);
         $form->handleRequest($request);
-//        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
+            $note = new Note();
+            $pts = 0;
+            $nbr = 0;
             foreach ($form->getData() as $reponse) {
                 $entityManager->persist($reponse);
+                if ($reponse->getQuestion()->getType() === TypeQuestionEnum::CLOSE) {
+                    $nbr++;
+                    if ($reponse->getQuestion()->isReponseVf() === $reponse->isReponseVf()) {
+                        $pts++;
+                    }
+                }
             };
-//            $encryptDataService->hashService($lyceen);
+            $note->setEleve($eleve);
+            $note->setEvaluation($questionnaire);
+            $note->setNote($pts);
+            $eleve->addNote($note);
+            $entityManager->persist($note);
+            $entityManager->persist($eleve);
             $entityManager->flush();
-            $session->getFlashBag()->add('success', 'Vos réponses ont bien été enregistrés');
-            return $this->redirectToRoute('app_profil');
+            $session->getFlashBag()->add('success', 'Vos réponses ont bien été enregistrés. Note : ' . $pts . '/' . $nbr . ' sur les questions v/f');
+            return $this->redirectToRoute('profil');
         }
-        return $this->render('lyceen/questionnaire.html.twig', [
+        return $this->render('evaluation/reponse.html.twig', [
             'form' => $form,
-//            'sponsor' => $this->sponsorRepository->findLast()
         ]);
     }
-
 }

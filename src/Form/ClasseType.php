@@ -18,9 +18,12 @@ class ClasseType extends AbstractType
             ->add('section')
             ->add('eleves', EntityType::class, [
                 'class' => Eleve::class,
-'multiple' => true,
+                'multiple' => true,
             ])
-        ;
+            ->add('formation', EntityType::class, [
+                'class' => Formation::class,
+                'multiple' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

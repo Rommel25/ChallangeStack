@@ -25,7 +25,9 @@ class CoursController extends AbstractController
    public function index(CoursRepository $coursRepository,FormateurRepository $formateurRepository ,EntityManagerInterface $entityManager, Security $security): Response
    {
        $formateur = $formateurRepository->findOneBy(['user'=>$security->getUser()->getId()]);
+    if ($formateur){
 
+    
        $difficultiesData = $entityManager
            ->createQueryBuilder()
            ->select('c.difficulte', 'c.titre','c.description','c.objectif','c.duree','c.id')
@@ -34,7 +36,14 @@ class CoursController extends AbstractController
            ->groupBy('c.difficulte, c.titre','c.description','c.objectif','c.duree','c.id')
            ->getQuery()
            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
+        }else{
+            $difficultiesData = $entityManager
+            ->createQueryBuilder()
+            ->select('c.difficulte', 'c.titre','c.description','c.objectif','c.duree','c.id')
+            ->from('App\Entity\Cours', 'c')
+            ->groupBy('c.difficulte, c.titre','c.description','c.objectif','c.duree','c.id')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);}
        // Organiser les données par difficulté et construire un tableau "data" pour chaque difficulté
        $groupedData = [];
        foreach ($difficultiesData as $row) {
@@ -115,17 +124,20 @@ class CoursController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_cours_show', methods: ['GET'])]
-    public function show(Cours $cour,CreneauRepository $creneauRepository, ClasseRepository $classeRepository): Response
+    public function show(Cours $cour,CreneauRepository $creneauRepository, ClasseRepository $classeRepository, CoursRepository $coursRepository): Response
     {
-        $classesByCours = $creneauRepository->findBy(['cours'=>$cour]);
-        $responses = [];
-        foreach ($classesByCours as $classe){
-            $responses[] = $classeRepository->findBy(['id'=>$classe->getClasse()->getId()]);
-        };
+//        $classesByCours = $creneauRepository->findBy(['cours'=>$cour]);
+//        $classesByCours = $classeRepository->findBy(['cours'=>$cour->getId()]);
+//        dd($classesByCours);
+//        $responses = [];
+//        foreach ($classesByCours as $classe){
+//            $responses[] = $classeRepository->findBy(['id'=>$classe->getClasse()->getId()]);
+//        };
+        $classes = $cour->getClasses();
 
         return $this->render('cours/show.html.twig', [
             'cour' => $cour,
-            'classesByCours' => $responses
+            'classesByCours' => $classes
         ]);
     }
 

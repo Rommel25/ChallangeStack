@@ -31,29 +31,31 @@ class ClasseController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{idF}', name: 'app_classe_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,$idF, FormationRepository $formationRepository): Response
+    #[Route('/new/{idF?}', name: 'app_classe_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, $idF = null, FormationRepository $formationRepository): Response
     {
         $classe = new Classe();
         $form = $this->createForm(ClasseType::class, $classe);
         $form->handleRequest($request);
 
-        $formation = $formationRepository->find($idF);
-        $classe->setFormation($formation);
-
+        if ($idF) {
+            $formation = $formationRepository->find($idF);
+            $classe->setFormation($formation);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($classe->getEleves() as $eleve){
+            foreach ($classe->getEleves() as $eleve) {
                 $eleve->addClass($classe);
             }
             $entityManager->persist($classe);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_formation_show', ['id' => $idF], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_classe_show', ['id' => $classe->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('classe/new.html.twig', [
             'classe' => $classe,
+            'idF' => $idF,
             'form' => $form,
         ]);
     }
@@ -77,7 +79,7 @@ class ClasseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($classe->getEleves() as $eleve){
+            foreach ($classe->getEleves() as $eleve) {
                 $eleve->addClass($classe);
             }
             $entityManager->flush();
@@ -90,38 +92,38 @@ class ClasseController extends AbstractController
 
         if ($formCsv->isSubmitted() && $formCsv->isValid()) {
             $csvFile = $formCsv->get('csv_file')->getData();
-            
+
             if (($handle = fopen($csvFile->getPathname(), 'r')) !== false) {
                 while (($data = fgetcsv($handle, 1000, ';')) !== false) {
                     // $data est un tableau contenant les valeurs des colonnes pour une ligne
                     $firstName = $data[0];
                     $lastName = $data[1];
                     $email = $data[2];
-                    
+
                     // Faites ce que vous voulez avec les données de chaque ligne ici
                     if ($userRepository->findOneBy(['email' => $email]) == null) {
                         $eleveUser = new User();
                         $eleveUser->setPrenom($firstName)
-                                  ->setNom($lastName)
-                                  ->setEmail($email)
-                                  ->setPassword('')
-                                  ->setPlainPassword('');
+                            ->setNom($lastName)
+                            ->setEmail($email)
+                            ->setPassword('')
+                            ->setPlainPassword('');
                         $uniqueId = uniqid();
                         $eleveUser->setToken($uniqueId);
                         $entityManager->persist($eleveUser);
-    
+
                         $eleve = new Eleve();
                         $eleve->setUser($eleveUser);
                         $eleve->addClass($classe);
                         $entityManager->persist($eleve);
-    
+
                         $email = (new Email())
-                                ->from('support@academiaflow.com')
-                                ->to($eleve->getUser()->getEmail())
-                                ->subject('Inscription à AcademiaFlow')
-                                ->text('Sending emails is fun again!')
-                                ->html('<p>Set password here http://challenge.local/premiereconnexion/'.$uniqueId.'</p>');
-    
+                            ->from('support@academiaflow.com')
+                            ->to($eleve->getUser()->getEmail())
+                            ->subject('Inscription à AcademiaFlow')
+                            ->text('Sending emails is fun again!')
+                            ->html('<p>Set password here http://challenge.local/premiereconnexion/' . $uniqueId . '</p>');
+
                         $mailer->send($email);
                     }
                 }
@@ -137,6 +139,7 @@ class ClasseController extends AbstractController
         return $this->render('classe/edit.html.twig', [
             'classe' => $classe,
             'form' => $form,
+            'idF' => false,
             'formCsv' => $formCsv->createView(),
         ]);
     }
@@ -144,7 +147,7 @@ class ClasseController extends AbstractController
     #[Route('/{id}', name: 'app_classe_delete', methods: ['POST'])]
     public function delete(Request $request, Classe $classe, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$classe->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $classe->getId(), $request->request->get('_token'))) {
             $entityManager->remove($classe);
             $entityManager->flush();
         }

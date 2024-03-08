@@ -42,6 +42,10 @@ class Cours
     #[ORM\OneToMany(targetEntity: Creneau::class, mappedBy: 'cours')]
     private Collection $creneaux;
 
+    #[ORM\ManyToMany(targetEntity: Classe::class, inversedBy: 'cours')]
+    #[ORM\JoinTable(name: 'eleves__classe')]
+    private Collection $classes;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ressource = null;
 
@@ -55,6 +59,7 @@ class Cours
         $this->ressources = new ArrayCollection();
         $this->evaluations = new ArrayCollection();
         $this->creneaux = new ArrayCollection();
+        $this->classes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,6 +225,30 @@ class Cours
                 $creneau->setCours(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Classe>
+     */
+    public function getClasses(): Collection
+    {
+        return $this->classes;
+    }
+
+    public function addClass(Classe $class): static
+    {
+        if (!$this->classes->contains($class)) {
+            $this->classes->add($class);
+        }
+
+        return $this;
+    }
+
+    public function removeClass(Classe $class): static
+    {
+        $this->classes->removeElement($class);
 
         return $this;
     }

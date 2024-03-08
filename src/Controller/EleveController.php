@@ -7,6 +7,7 @@ use App\Entity\Eleve;
 use App\Form\EleveType;
 use App\Repository\EleveRepository;
 use App\Repository\ClasseRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints\Uuid;
 
 #[Route('/eleve')]
@@ -27,18 +29,33 @@ class EleveController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{idClasse}', name: 'app_eleve_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, $idClasse, ClasseRepository $classeRepository): Response
+    #[Route('/stats', name: 'app_eleve_stats', methods: ['GET','POST'])]
+    public function stats(Request $request, EntityManagerInterface $entityManager,NoteRepository $noteRepository, EleveRepository $eleveRepository, Security $security): Response
+    {
+//        dd('ici');
+        $note = [];
+        $eleve = $eleveRepository->findOneBy(['id'=>$security->getUser()->getId()]);
+//        dd($eleve->getId());
+        $notes = $noteRepository->findBy(['eleve' => $eleve->getId()]);
+//        dd($eleve->getNotes(), $notes);
+        return $this->render('eleve/stats.html.twig', [
+            'notes' => $notes
+        ]);
+    }
+
+    #[Route('/new/{idClasse?}', name: 'app_eleve_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, $idClasse = null, ClasseRepository $classeRepository): Response
     {
         $eleve = new Eleve();
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
 
-        $classe = $classeRepository->find($idClasse);
-        $eleve->addClass($classe);
+        if ($idClasse) {
+            $classe = $classeRepository->find($idClasse);
+            $eleve->addClass($classe);
+        }
 
-
-//        dd($eleve);
+        //        dd($eleve);
         if ($form->isSubmitted() && $form->isValid()) {
             $eleve->getUser()->setPassword('');
             $eleve->getUser()->setPlainPassword('');
@@ -52,7 +69,7 @@ class EleveController extends AbstractController
                 ->to($eleve->getUser()->getEmail())
                 ->subject('Va niquer ta mere')
                 ->text('Sending emails is fun again!')
-                ->html('<p>Set password here http://challenge.local/premiereconnexion/'.$uniqueId.'</p>');
+                ->html('<p>Set password here http://challenge.local/premiereconnexion/' . $uniqueId . '</p>');
 
             $mailer->send($email);
 
@@ -78,7 +95,7 @@ class EleveController extends AbstractController
     {
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
-//        dd($eleve->getClasses());
+        //        dd($eleve->getClasses());
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($eleve);
             $entityManager->flush();
@@ -95,11 +112,13 @@ class EleveController extends AbstractController
     #[Route('/{id}', name: 'app_eleve_delete', methods: ['POST'])]
     public function delete(Request $request, Eleve $eleve, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$eleve->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $eleve->getId(), $request->request->get('_token'))) {
             $entityManager->remove($eleve);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_eleve_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
