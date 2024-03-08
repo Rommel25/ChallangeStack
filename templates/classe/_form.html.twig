@@ -2,7 +2,7 @@
 
 {# Parcourir chaque champ du formulaire #}
 {% for field in form %}
-  {% if field.vars.name != '_token' and (idF is defined or field.vars.name != 'formation') %}
+  {% if field.vars.name != '_token' and (idF is null or field.vars.name != 'formation') %}
     <div class="mb-5">
       {# Rendu personnalisé du label du champ #}
       {{ form_label(field, null, { label_attr: { class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900', for: 'base-input' } }) }}

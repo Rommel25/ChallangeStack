@@ -95,14 +95,16 @@ class CreneauController extends AbstractController
                 ];
             }
         }
-        foreach ($formateur->getUser()->getCreneaux() as $creneauCreated) {
-            if ($creneauCreated->getCours() == null) {
-                $response[] = [
-                    'title' => 'Créneau libre',
-                    'url'   => '/creneau/' . $creneauCreated->getId(),
-                    'start' => $creneauCreated->getDebut()->format('Y-m-d H:i:s'),
-                    'end'   => $creneauCreated->getFin()->format('Y-m-d H:i:s'),
-                ];
+        if($formateur != null) {
+            foreach ($formateur->getUser()->getCreneaux() as $creneauCreated) {
+                if ($creneauCreated->getCours() == null) {
+                    $response[] = [
+                        'title' => 'Créneau libre',
+                        'url' => '/creneau/' . $creneauCreated->getId(),
+                        'start' => $creneauCreated->getDebut()->format('Y-m-d H:i:s'),
+                        'end' => $creneauCreated->getFin()->format('Y-m-d H:i:s'),
+                    ];
+                }
             }
         }
 
